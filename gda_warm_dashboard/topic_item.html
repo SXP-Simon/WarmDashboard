@@ -1,20 +1,21 @@
 {% if topics %}
-<div class="section-title">
-    <span class="section-title-icon"></span>
-    <span>今日话题</span>
+<div class="card-header">
+    <div class="header-badge bg-teal-dot"></div>
+    <h2 class="card-title">今日话题</h2>
 </div>
-<div class="topic-list">
+<div class="topic-group">
     {% for topic in topics %}
-    <div class="topic-item avoid-break">
-        <div class="topic-no">#{{ "%02d" | format(topic.index) }}</div>
-        <div class="topic-content">
-            <div class="topic-title">{{ topic.topic.topic }}</div>
+    <div class="topic-row avoid-break">
+        <div class="dot-badge teal-circle">
+            <span>{{ "%02d" | format(topic.index) }}</span>
+        </div>
+        <div class="topic-main">
+            <div class="topic-heading">{{ topic.topic.topic }}</div>
             <div class="topic-meta">
-                <span class="meta-icon">👥</span>
-                <span class="meta-label">参与者：</span>
-                <span class="meta-value">{{ topic.contributors }}</span>
+                <span class="meta-label">参与群友</span>
+                <span class="meta-names">{{ topic.contributors }}</span>
             </div>
-            <div class="topic-detail">{{ topic.detail | safe }}</div>
+            <div class="topic-summary">{{ topic.detail | safe }}</div>
         </div>
     </div>
     {% endfor %}

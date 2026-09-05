@@ -1,25 +1,25 @@
 {% if titles %}
-<div class="section-title">
-    <span class="section-title-icon"></span>
-    <span>群友画像</span>
+<div class="card-header">
+    <div class="header-badge bg-gold-dot"></div>
+    <h2 class="card-title">群友画像</h2>
 </div>
-<div class="title-grid">
+<div class="profile-grid">
     {% for title in titles %}
-    <div class="title-card avoid-break">
-        <div class="title-avatar">
+    <div class="profile-item avoid-break">
+        <div class="avatar-circle">
             {% if title.avatar_data %}
-            <img src="{{ title.avatar_data }}" alt="头像">
+            <img src="{{ title.avatar_data }}" alt="{{ title.name }}">
             {% endif %}
         </div>
-        <div class="title-info">
-            <div class="title-name">{{ title.name }}</div>
-            <div class="title-tags">
-                <span class="title-title">{{ title.title }}</span>
+        <div class="profile-details">
+            <div class="profile-top">
+                <span class="profile-name">{{ title.name }}</span>
+                <span class="pill-badge teal-pill">{{ title.title }}</span>
                 {% if title.profile_display or title.mbti %}
-                <span class="title-mbti">{{ title.profile_display or title.mbti }}</span>
+                <span class="pill-badge coral-pill">{{ title.profile_display or title.mbti }}</span>
                 {% endif %}
             </div>
-            <div class="title-reason">{{ title.reason }}</div>
+            <div class="profile-desc">{{ title.reason }}</div>
         </div>
     </div>
     {% endfor %}
