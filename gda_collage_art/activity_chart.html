@@ -1,10 +1,15 @@
 {% if chart_data %}
 <div class="ca-chart-wrap group">
-    <!-- Washi tape at top right -->
-    <div class="ca-tape ca-tape-blue -top-3 right-6 -rotate-2 group-hover:rotate-3 transition-transform duration-200"></div>
+    <!-- Washi tape at top right with jagged ends -->
+    <div class="ca-tape ca-tape-blue -top-3.5 right-8 -rotate-2 group-hover:rotate-4 group-hover:-translate-y-1 transition-transform duration-200"></div>
     <div class="ca-chart-title-row">
-        <span class="ca-stamp-badge bg-[#3498db] text-white">24H TIMELINE</span>
-        <span class="font-mono text-xs uppercase tracking-widest text-[#2d2d2d]/70">ACTIVITY MONITOR</span>
+        <div class="ca-chart-badge-group">
+            <span class="ca-stamp-badge bg-[#3498db] text-white">24H TIMELINE</span>
+            <span class="ca-stamp-pill font-mono text-[10px] text-[#2d2d2d] border border-[#2d2d2d] bg-[#f39c12] px-1.5 py-0.5 font-bold">ACTIVITY LOG</span>
+        </div>
+        <div class="ca-stamp-seal font-mono text-[10px] text-[#e74c3c] font-bold tracking-widest uppercase">
+            [ ARCHIVE RECORD ]
+        </div>
     </div>
     <div class="ca-chart-bars">
         {% for item in chart_data %}
@@ -22,11 +27,15 @@
             <span class="ca-chart-val font-mono opacity-0">0</span>
             {% endif %}
             <div class="ca-chart-track">
-                <div class="ca-chart-fill {% if bar_percentage > 70 %}bg-[#e74c3c]{% elif bar_percentage > 35 %}bg-[#f39c12]{% else %}bg-[#3498db]{% endif %}" style="height: {{ bar_percentage }}%;"></div>
+                <div class="ca-chart-fill {% if bar_percentage > 70 %}ca-bar-hot{% elif bar_percentage > 35 %}ca-bar-warm{% else %}ca-bar-cool{% endif %}" style="height: {{ bar_percentage }}%;"></div>
             </div>
             <span class="ca-chart-hour font-mono">{{ "%02d" | format(item.hour) }}</span>
         </div>
         {% endfor %}
+    </div>
+    <div class="ca-chart-footer-note font-mono">
+        <span>FIG 01. DIURNAL ACTIVITY DISTRIBUTION</span>
+        <span>PEAK ANALYSIS // CLOCKED</span>
     </div>
 </div>
 {% endif %}

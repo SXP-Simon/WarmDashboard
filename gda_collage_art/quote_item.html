@@ -1,11 +1,11 @@
 {% if quotes %}
 <div class="ca-quote-list">
-    {% set rot_classes = ['rotate-[0.9deg]', '-rotate-[1.3deg]', 'rotate-[1.1deg]', '-rotate-[0.7deg]'] %}
+    {% set rot_classes = ['rotate-[1deg]', '-rotate-[1.4deg]', 'rotate-[1.2deg]', '-rotate-[0.8deg]'] %}
     {% set tape_colors = ['ca-tape-purple', 'ca-tape-yellow', 'ca-tape-red', 'ca-tape-blue'] %}
     {% for quote in quotes %}
     <div class="ca-quote-card group {{ rot_classes[loop.index0 % 4] }} avoid-break">
-        <!-- Washi tape -->
-        <div class="ca-tape {{ tape_colors[loop.index0 % 4] }} -top-3 left-10 -rotate-2 group-hover:rotate-4 group-hover:-translate-y-1 transition-transform duration-200"></div>
+        <!-- Washi tape pinning quote card -->
+        <div class="ca-tape {{ tape_colors[loop.index0 % 4] }} -top-3.5 left-12 -rotate-2 group-hover:rotate-5 group-hover:-translate-y-1 transition-transform duration-200"></div>
         <div class="ca-quote-header">
             <div class="ca-quote-avatar-frame">
                 {% if quote.avatar_url %}
@@ -16,19 +16,21 @@
             </div>
             <div class="ca-quote-meta">
                 <span class="ca-quote-sender font-serif">{{ quote.sender }}</span>
-                <span class="ca-quote-stamp font-mono">SELECTED QUOTE</span>
+                <span class="ca-stamp-pill font-mono bg-[#f39c12] text-[#2d2d2d] border border-[#2d2d2d]">DIALOGUE RECORD // 现场</span>
             </div>
         </div>
         <div class="ca-quote-statement font-serif">
-            <span class="ca-quote-mark font-serif">“</span>
-            {{ quote.content }}
-            <span class="ca-quote-mark font-serif">”</span>
+            <span class="ca-quote-ransom-mark bg-[#e74c3c] text-white">“</span>
+            <span class="ca-quote-content-text">{{ quote.content }}</span>
+            <span class="ca-quote-ransom-mark bg-[#2d2d2d] text-white">”</span>
         </div>
         <div class="ca-quote-critique-ticket">
-            <div class="ca-ticket-stamp font-mono">REVIEW // 锐评</div>
+            <div class="ca-ticket-notch-left"></div>
+            <div class="ca-ticket-stamp font-mono">CRITIQUE // 现场锐评</div>
             <div class="ca-ticket-content font-sans">
                 {{ quote.reason | safe }}
             </div>
+            <div class="ca-ticket-notch-right"></div>
         </div>
     </div>
     {% endfor %}

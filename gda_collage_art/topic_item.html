@@ -1,25 +1,30 @@
 {% if topics %}
 <div class="ca-topic-list">
-    {% set rot_classes = ['rotate-[0.7deg]', '-rotate-[1deg]', 'rotate-[1.2deg]', '-rotate-[0.8deg]'] %}
+    {% set rot_classes = ['rotate-[0.8deg]', '-rotate-[1.1deg]', 'rotate-[1.3deg]', '-rotate-[0.9deg]'] %}
     {% set tape_colors = ['ca-tape-yellow', 'ca-tape-red', 'ca-tape-blue', 'ca-tape-purple'] %}
     {% for topic in topics %}
     <div class="ca-topic-card group {{ rot_classes[loop.index0 % 4] }} avoid-break">
         <!-- Washi tape decoration with parallax effect -->
-        <div class="ca-tape {{ tape_colors[loop.index0 % 4] }} -top-3 left-8 -rotate-3 group-hover:rotate-6 group-hover:-translate-y-1 transition-transform duration-200"></div>
+        <div class="ca-tape {{ tape_colors[loop.index0 % 4] }} -top-3.5 left-10 -rotate-3 group-hover:rotate-6 group-hover:-translate-y-1 transition-transform duration-200"></div>
+        
+        <!-- Torn paper decorative top edge -->
+        <div class="ca-torn-strip-top"></div>
+
         <div class="ca-topic-head">
-            <div class="ca-topic-index-badge">
-                <span class="font-mono font-bold text-sm">#{{ "%02d" | format(topic.index) }}</span>
+            <div class="ca-ransom-badge">
+                <span class="ca-ransom-char bg-[#2d2d2d] text-white">#</span>
+                <span class="ca-ransom-num bg-[#e74c3c] text-white font-mono">{{ "%02d" | format(topic.index) }}</span>
             </div>
             <div class="ca-topic-main-meta">
                 <h3 class="ca-topic-title font-serif">{{ topic.topic.topic }}</h3>
                 <div class="ca-topic-contributors font-mono">
-                    <span class="ca-tag-stamp">CONTRIBUTORS</span>
-                    <span class="ca-contributor-text">{{ topic.contributors }}</span>
+                    <span class="ca-stamp-pill bg-[#ebe4d8] text-[#2d2d2d] border border-[#2d2d2d]">CONTRIBUTORS // 群友</span>
+                    <span class="ca-contributor-text font-bold">{{ topic.contributors }}</span>
                 </div>
             </div>
         </div>
+        
         <div class="ca-topic-body">
-            <div class="ca-torn-edge-top"></div>
             <div class="ca-topic-detail-inner font-sans">
                 {{ topic.detail | safe }}
             </div>
