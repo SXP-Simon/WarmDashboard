@@ -4,6 +4,6 @@
     "desc": "以 Ma (间) 留白哲学与侘寂美学为核心，发丝级边框与植物线描装饰，沉静治愈的数据展示体验",
     "author": "SXP-Simon",
     "version": "1.0.0",
-    "has_image": true,
-    "has_html": true
+    "has_image": false,
+    "has_html": false
 }
