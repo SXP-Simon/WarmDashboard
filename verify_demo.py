@@ -119,6 +119,14 @@ for tpl_dir in sorted(tpl_dirs, key=lambda p: p.name):
     for name in ("image_template.html", "html_template.html"):
         html = rt_env.get_template(name).render(**main_ctx)
         assert len(html) > 500
+        # 语义断言：验证关键数据与结构插值正确
+        assert "2026年09月05日" in html
+        assert "测试话题" in html
+        assert "20:00-22:00" in html
+        if tpl_dir.name == "gda_warm_dashboard":
+            assert "群聊日常分析" in html and "今日话题" in html and "金句" in html
+        elif tpl_dir.name == "gda_japanese_fresh":
+            assert "时间的轨迹" in html and "话题的交织" in html
         print(f"[{tpl_dir.name}] [render OK] {name} ({len(html)} bytes)")
 
 if not PLUGIN_ROOT or not (Path(PLUGIN_ROOT) / "src").is_dir():
@@ -167,7 +175,7 @@ for tpl_dir in sorted(tpl_dirs, key=lambda p: p.name):
     with tempfile.TemporaryDirectory() as td:
         installed_root = Path(td)
         res = install_template_from_zip(
-            zip_data=buf.getvalue(),
+            buf.getvalue(),
             store_dir=installed_root,
         )
         print(f"[install {tpl_dir.name}]", json.dumps(res, ensure_ascii=False))
