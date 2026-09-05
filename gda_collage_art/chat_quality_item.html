@@ -1,0 +1,41 @@
+{% if summary %}
+<div class="ca-quality-summary group avoid-break">
+    <div class="ca-tape ca-tape-red -top-3.5 left-8 -rotate-2 group-hover:rotate-4 group-hover:-translate-y-1 transition-transform duration-200"></div>
+    <div class="ca-summary-header-row">
+        <div class="ca-summary-badge font-mono">CASE DOSSIER // 深度质检报告</div>
+        <div class="ca-stamp-circle font-mono">CONFIDENTIAL</div>
+    </div>
+    <p class="ca-summary-text font-sans">{{ summary }}</p>
+</div>
+{% endif %}
+
+{% if dimensions %}
+<div class="ca-dim-grid avoid-break">
+    {% set bar_types = ['ca-dim-red', 'ca-dim-blue', 'ca-dim-yellow', 'ca-dim-purple'] %}
+    {% for dim in dimensions %}
+    {% set safe_percentage = dim.percentage | float %}
+    {% if safe_percentage < 0 %}
+    {% set safe_percentage = 0 %}
+    {% elif safe_percentage > 100 %}
+    {% set safe_percentage = 100 %}
+    {% endif %}
+    <div class="ca-dim-card">
+        <div class="ca-dim-head">
+            <span class="ca-dim-name font-serif">{{ dim.name }}</span>
+            <div class="ca-dim-ratio-tag font-mono">
+                <span class="ca-dim-score">{{ safe_percentage | int }}</span>
+                <span class="ca-dim-pct">%</span>
+            </div>
+        </div>
+        <div class="ca-dim-track">
+            <div class="ca-dim-fill {{ bar_types[loop.index0 % 4] }}" style="width: {{ safe_percentage }}%;"></div>
+        </div>
+        {% if dim.comment %}
+        <div class="ca-dim-comment font-mono">
+            <span class="ca-comment-bullet">►</span> {{ dim.comment }}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

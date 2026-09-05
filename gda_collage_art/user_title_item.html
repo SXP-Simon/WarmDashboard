@@ -1,0 +1,37 @@
+{% if titles %}
+<div class="ca-title-grid">
+    {% set rot_classes = ['-rotate-[1.3deg]', 'rotate-[1.6deg]', '-rotate-[1deg]', 'rotate-[1.2deg]'] %}
+    {% set tape_colors = ['ca-tape-red', 'ca-tape-purple', 'ca-tape-yellow', 'ca-tape-blue'] %}
+    {% for title in titles %}
+    <div class="ca-title-card group {{ rot_classes[loop.index0 % 4] }} avoid-break">
+        <!-- Washi tape at corner pinning polaroid -->
+        <div class="ca-tape {{ tape_colors[loop.index0 % 4] }} -top-3 right-6 rotate-3 group-hover:-rotate-5 group-hover:-translate-y-1 transition-transform duration-200"></div>
+        <div class="ca-title-card-inner">
+            <div class="ca-avatar-polaroid">
+                <div class="ca-polaroid-photo-frame">
+                    {% if title.avatar_data %}
+                    <img src="{{ title.avatar_data }}" alt="{{ title.name }}" class="ca-avatar-img">
+                    {% else %}
+                    <div class="ca-avatar-placeholder font-mono">NO PIC</div>
+                    {% endif %}
+                </div>
+                <span class="ca-polaroid-label font-mono">FILE // #{{ loop.index }}</span>
+            </div>
+            <div class="ca-title-info">
+                <div class="ca-title-name-row">
+                    <span class="ca-member-name font-serif">{{ title.name }}</span>
+                    <span class="ca-badge ca-badge-blue font-mono">{{ title.title }}</span>
+                    {% if title.profile_display or title.mbti %}
+                    <span class="ca-badge ca-badge-purple font-mono">{{ title.profile_display or title.mbti }}</span>
+                    {% endif %}
+                </div>
+                <div class="ca-title-reason-box">
+                    <div class="ca-reason-pin font-mono">MEMO:</div>
+                    <div class="ca-title-reason font-sans">{{ title.reason }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
