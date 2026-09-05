@@ -1,0 +1,31 @@
+{% if quotes %}
+<div class="jf-quote-list">
+    {% for quote in quotes %}
+    <div class="jf-quote-card avoid-break">
+        <div class="jf-quote-header">
+            <div class="jf-quote-avatar">
+                {% if quote.avatar_url %}
+                <img src="{{ quote.avatar_url }}" alt="{{ quote.sender }}">
+                {% endif %}
+            </div>
+            <div class="jf-quote-author">
+                <span class="jf-author-name">{{ quote.sender }}</span>
+                <span class="jf-author-subtitle">今日轻语</span>
+            </div>
+        </div>
+        <div class="jf-quote-text">「{{ quote.content }}」</div>
+        <div class="jf-quote-review">
+            <div class="jf-review-decor">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#64b5f6" stroke-width="1.2" stroke-linecap="round">
+                    <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z"></path>
+                </svg>
+            </div>
+            <div class="jf-review-content">
+                <span class="jf-review-tag">心绪观察</span>
+                <span class="jf-review-text">{{ quote.reason | safe }}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

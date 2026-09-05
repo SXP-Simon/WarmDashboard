@@ -1,0 +1,23 @@
+{% if titles %}
+<div class="jf-profile-grid">
+    {% for title in titles %}
+    <div class="jf-profile-item avoid-break">
+        <div class="jf-avatar-frame">
+            {% if title.avatar_data %}
+            <img src="{{ title.avatar_data }}" alt="{{ title.name }}">
+            {% endif %}
+        </div>
+        <div class="jf-profile-body">
+            <div class="jf-profile-header">
+                <span class="jf-profile-name">{{ title.name }}</span>
+                <span class="jf-badge jf-badge-mint">{{ title.title }}</span>
+                {% if title.profile_display or title.mbti %}
+                <span class="jf-badge jf-badge-pink">{{ title.profile_display or title.mbti }}</span>
+                {% endif %}
+            </div>
+            <div class="jf-profile-desc">{{ title.reason }}</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

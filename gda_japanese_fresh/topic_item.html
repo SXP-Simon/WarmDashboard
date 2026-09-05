@@ -1,0 +1,26 @@
+{% if topics %}
+<div class="jf-topic-list">
+    {% for topic in topics %}
+    <div class="jf-topic-row avoid-break">
+        <div class="jf-topic-aside">
+            <span class="jf-topic-index">{{ "%02d" | format(topic.index) }}</span>
+            <svg class="jf-botanical-leaf" viewBox="0 0 24 24" fill="none" stroke="#98d8c8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22C12 22 20 18 20 10C20 4 15 2 12 2C9 2 4 4 4 10C4 18 12 22 12 22Z"></path>
+                <path d="M12 2V22"></path>
+                <path d="M12 7L16 10"></path>
+                <path d="M12 12L8 15"></path>
+            </svg>
+        </div>
+        <div class="jf-topic-content">
+            <div class="jf-topic-title">{{ topic.topic.topic }}</div>
+            <div class="jf-topic-meta">
+                <span class="jf-meta-dot"></span>
+                <span class="jf-meta-label">记录者与群友</span>
+                <span class="jf-meta-names">{{ topic.contributors }}</span>
+            </div>
+            <div class="jf-topic-detail">{{ topic.detail | safe }}</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

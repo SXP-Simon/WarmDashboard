@@ -1,0 +1,25 @@
+{% if summary %}
+<div class="jf-quality-summary">{{ summary }}</div>
+{% endif %}
+{% if dimensions %}
+<div class="jf-dimension-list">
+    {% for dim in dimensions %}
+    {% set safe_percentage = dim.percentage | float %}
+    {% if safe_percentage < 0 %}
+    {% set safe_percentage = 0 %}
+    {% elif safe_percentage > 100 %}
+    {% set safe_percentage = 100 %}
+    {% endif %}
+    <div class="jf-dim-item">
+        <div class="jf-dim-info">
+            <span class="jf-dim-name">{{ dim.name }}</span>
+            <span class="jf-dim-ratio">{{ safe_percentage | int }}%</span>
+        </div>
+        <div class="jf-dim-track">
+            <div class="jf-dim-fill" style="width: {{ safe_percentage }}%;"></div>
+        </div>
+        <div class="jf-dim-note">{{ dim.comment }}</div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

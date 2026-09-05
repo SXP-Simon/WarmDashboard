@@ -1,0 +1,17 @@
+{% if chart_data %}
+<div class="jf-chart-wrap">
+    <div class="jf-chart-bars">
+        {% for item in chart_data %}
+        <div class="jf-chart-col">
+            {% if item.count > 0 %}
+            <span class="jf-chart-val">{{ item.count }}</span>
+            {% endif %}
+            <div class="jf-chart-track">
+                <div class="jf-chart-fill" style="height: {{ item.percentage }}%;"></div>
+            </div>
+            <span class="jf-chart-hour">{{ "%02d" | format(item.hour) }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
