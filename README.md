@@ -2,12 +2,13 @@
 
 本仓库是 [astrbot_plugin_qq_group_daily_analysis](https://github.com/SXP-Simon/astrbot_plugin_qq_group_daily_analysis) 插件的**官方/精选视觉主题模板库**。
 
-仓库当前收录 **两套经过严苛无头渲染调优与完整端到端测试的高质量视觉风格模板**：
+仓库当前收录 **三套经过严苛无头渲染调优与完整端到端测试的高质量视觉风格模板**：
 
 | 模板标识 | 风格名称 | 核心设计哲学与视觉特点 | 效果速览 |
 | :--- | :--- | :--- | :---: |
-| **`gda_warm_dashboard`** | **暖色仪表盘 (Warm Dashboard)** | 温暖舒适的珊瑚赤陶底色、奶油白大圆角卡片、漫射柔光阴影，搭配青绿与金黄的高亮配色，营造亲和专业的数据仪表盘体验。 | [查看效果](#1-暖色仪表盘-gda_warm_dashboard) |
+| **`gda_warm_dashboard`** | **暖色仪表盘 (Warm Dashboard)** | 温暖舒适的珊瑚赤陶底色、奶油白大圆角卡片、漫反射柔光阴影，搭配青绿与金黄的高亮配色，营造亲和专业的数据仪表盘体验。 | [查看效果](#1-暖色仪表盘-gda_warm_dashboard) |
 | **`gda_japanese_fresh`** | **日系清新风 (Japanese Fresh)** | 以「間 (Ma)」留白哲学与侘寂美学为核心，米白纸质纹理、发丝级淡雅边框、单株植物线描点缀，沉静治愈的呼吸感排版。 | [查看效果](#2-日系清新风-gda_japanese_fresh) |
+| **`gda_collage_art`** | **拼贴艺术风 (Collage Art)** | 达达主义与波普艺术混合媒材，和纸胶带、微倾斜角度剪裁、撕纸边缘与混搭字体，充满手工质感与硬核视觉冲击。 | [查看效果](#3-拼贴艺术风-gda_collage_art) |
 
 ---
 
@@ -15,7 +16,7 @@
 
 ### 1. 暖色仪表盘 (`gda_warm_dashboard`)
 
-> **设计核心**：珊瑚赤陶底色 (`#d4a088`)、奶油白圆角卡片 (`#faf8f5`)、柔和漫射阴影 (`shadow-xl shadow-black/8`)、青绿 (`#4a9d9a`) 与金黄 (`#e8b86d`) 数据图表点缀。
+> **设计核心**：珊瑚赤陶底色 (`#d4a088`)、奶油白圆角卡片 (`#faf8f5`)、柔和漫反射阴影 (`shadow-xl shadow-black/8`)、青绿 (`#4a9d9a`) 与金黄 (`#e8b86d`) 数据图表点缀。
 
 ![暖色仪表盘预览图](assets/gda_warm_dashboard-demo-thumb.jpg)
 
@@ -33,8 +34,18 @@
 
 ---
 
+### 3. 拼贴艺术风 (`gda_collage_art`)
+
+> **设计核心**：陈旧纸张底色 (`#f5f0e8`)、纯色实线边框 (`border-2 border-[#2d2d2d]`)、硬偏移纯色阴影 (`shadow-[5px_5px_0px_#2d2d2d]`)、彩色和纸胶带条纹 (`repeating-linear-gradient`)、轻微角度旋转、杂志剪贴与拍立得混搭排版。
+
+![拼贴艺术风预览图](assets/gda_collage_art-demo-thumb.jpg)
+
+* 完整无损高清长图：[assets/gda_collage_art-demo.jpg](assets/gda_collage_art-demo.jpg)
+
+---
+
 > 📌 **图片资产规范说明**：
-> - `assets/*-demo-thumb.jpg` —— 本 README 展示用的缩略图（宽度 420px），用于仓库首页快速预览。
+> - `assets/*-demo-thumb.jpg` —— 本 README 展示用的缩略图（宽度 384~420px），用于仓库首页快速预览。
 > - `assets/*-demo.jpg` —— 完整长图（750px 宽无损高质），供查看全部排版与细节。
 > - `<template_name>/preview.jpg` —— 随模板打包随行的模板预览图：用户在 AstrBot 中使用 QQ `查看模板` 命令或进入插件 WebUI 模板画廊时，将即时显示该图。
 >
@@ -52,7 +63,7 @@
    ```text
    https://github.com/SXP-Simon/WarmDashboard
    ```
-4. 点击安装。插件内置安装器会自动拉取源码并识别仓库内的所有模板目录（`gda_warm_dashboard/` 与 `gda_japanese_fresh/`），完成校验与注册，**全程热加载，无需重启机器人**。
+4. 点击安装。插件内置安装器会自动拉取源码并识别仓库内的所有模板目录（`gda_warm_dashboard/`、`gda_japanese_fresh/`、`gda_collage_art/`），完成校验与注册，**全程热加载，无需重启机器人**。
 
 ### 方式二：下载 ZIP 手动上传
 
@@ -69,8 +80,8 @@
 
 ```text
 WarmDashboard/
-├── README.md                      # 仓库综合说明文档
-├── AGENTS.md                      # 双设计系统规范 (Japanese Fresh & Warm Dashboard)
+├── README.md                      # 仓库综合说明文档（三套视觉风格展示与索引）
+├── AGENTS.md                      # 三套完整设计系统规范 (Japanese Fresh & Warm Dashboard & Collage Art)
 ├── gda_warm_dashboard/            # [模板一] 暖色仪表盘 (Warm Dashboard)
 │   ├── image_template.html        # 长图海报主骨架 (750px Headless 优化)
 │   ├── html_template.html         # 独立网页主骨架 (移动/桌面自适应响应式)
@@ -89,6 +100,16 @@ WarmDashboard/
 │   ├── quote_item.html            # 金句子组件（虚线极简微光卡片）
 │   ├── activity_chart.html        # 24h 活跃度柱状图子组件（发丝底槽）
 │   ├── chat_quality_item.html     # 群聊质量多维子组件
+│   ├── template.json              # 模板元数据与能力声明
+│   └── preview.jpg                # 模板内置缩略预览图
+├── gda_collage_art/               # [模板三] 拼贴艺术风 (Collage Art)
+│   ├── image_template.html        # 拼贴艺术长图海报主骨架
+│   ├── html_template.html         # 响应式网页主骨架 (含纸片掀起/胶带视差动效)
+│   ├── topic_item.html            # 话题子组件（和纸胶带与撕纸剪报感）
+│   ├── user_title_item.html       # 群友拍立得拍立造像子组件
+│   ├── quote_item.html            # 金句锐评撕纸卡片子组件
+│   ├── activity_chart.html        # 24h 轨迹柱状图子组件（对比硬边条纹）
+│   ├── chat_quality_item.html     # 群聊质量深度复盘子组件
 │   ├── template.json              # 模板元数据与能力声明
 │   └── preview.jpg                # 模板内置缩略预览图
 ├── assets/                        # 文档与 Releases 高清演示素材
@@ -130,6 +151,21 @@ WarmDashboard/
 }
 ```
 
+### 拼贴艺术风关键 Token (`gda_collage_art`)
+```css
+:root {
+    --bg-paper: #f5f0e8;             /* 陈旧纸张底色 */
+    --bg-paper-alt: #ebe4d8;         /* 次级泛黄纸张色 */
+    --card-white: #ffffff;           /* 纯白剪切色 */
+    --charcoal: #2d2d2d;             /* 深炭灰边框与主文字 */
+    --cut-red: #e74c3c;              /* 剪切红 */
+    --magazine-blue: #3498db;        /* 杂志蓝 */
+    --paste-yellow: #f39c12;         /* 粘贴黄 */
+    --fragment-purple: #9b59b6;      /* 碎片紫 */
+    /* 核心风格规则：全直角 rounded-none、硬偏移阴影 shadow-[5px_5px_0px_#2d2d2d]、和纸条纹胶带 */
+}
+```
+
 > 详细的 Tailwind Token 字典、绝对禁止规则（Forbidden）与 Hard Prompt 请查阅 [AGENTS.md](AGENTS.md)。
 
 ---
@@ -148,7 +184,7 @@ python verify_demo.py path/to/astrbot_plugin_qq_group_daily_analysis
 python generate_preview.py
 
 # 也可以仅为特定模板生成：
-python generate_preview.py gda_japanese_fresh
+python generate_preview.py gda_collage_art
 ```
 
 ---
