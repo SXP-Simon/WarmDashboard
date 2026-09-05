@@ -4,6 +4,6 @@
     "desc": "达达主义与波普艺术混合媒材，和纸胶带、撕纸边缘与混搭字体，充满手工质感与视觉冲击的拼贴艺术体验",
     "author": "SXP-Simon",
     "version": "1.0.0",
-    "has_image": false,
-    "has_html": false
+    "has_image": true,
+    "has_html": true
 }

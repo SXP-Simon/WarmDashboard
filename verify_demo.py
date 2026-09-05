@@ -127,6 +127,8 @@ for tpl_dir in sorted(tpl_dirs, key=lambda p: p.name):
             assert "群聊日常分析" in html and "今日话题" in html and "金句" in html
         elif tpl_dir.name == "gda_japanese_fresh":
             assert "时间的轨迹" in html and "话题的交织" in html
+        elif tpl_dir.name == "gda_collage_art":
+            assert "时间的剪影" in html and "话题的拼图" in html and "群聊日常纪录" in html
         print(f"[{tpl_dir.name}] [render OK] {name} ({len(html)} bytes)")
 
 if not PLUGIN_ROOT or not (Path(PLUGIN_ROOT) / "src").is_dir():

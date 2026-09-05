@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="{{ 'zh-CN' if t2i_font_source == 'Mainland' else 'zh-Hant' }}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>群聊日常分析 · 拼贴艺术风 · {{ current_date }}</title>
+    <link rel="preconnect" href="{{ t2i_google_fonts_mirror }}">
+    <link rel="preconnect" href="{{ t2i_gstatic_mirror }}" crossorigin>
+    <link
+        href="{{ t2i_google_fonts_mirror }}/css2?family=Space+Grotesk:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-paper: #f5f0e8;
+            --bg-paper-alt: #ebe4d8;
+            --card-white: #ffffff;
+            --charcoal: #2d2d2d;
+            --cut-red: #e74c3c;
+            --magazine-blue: #3498db;
+            --paste-yellow: #f39c12;
+            --fragment-purple: #9b59b6;
+
+            --font-serif: {% if t2i_font_source == 'Mainland' %}'Noto Serif SC'{% else %}'Noto Serif TC'{% endif %}, serif;
+            --font-sans: 'Space Grotesk', {% if t2i_font_source == 'Mainland' %}'Noto Sans SC'{% else %}'Noto Sans TC'{% endif %}, sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--charcoal);
+            background-color: var(--bg-paper);
+            background-image:
+                linear-gradient(rgba(45, 45, 45, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(45, 45, 45, 0.04) 1px, transparent 1px);
+            background-size: 24px 24px;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .ca-web-wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 20px 60px;
+        }
+
+        @media (min-width: 768px) {
+            .ca-web-wrap {
+                padding: 48px 32px 80px;
+            }
+        }
+
+        .font-serif { font-family: var(--font-serif); }
+        .font-sans { font-family: var(--font-sans); }
+        .font-mono { font-family: var(--font-mono); }
+
+        /* Washi Tape Core */
+        .ca-tape {
+            position: absolute;
+            height: 20px;
+            width: 100px;
+            z-index: 20;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+            opacity: 0.92;
+            pointer-events: none;
+            transition: transform 0.2s ease-out;
+        }
+        .ca-tape-yellow {
+            background: repeating-linear-gradient(90deg, #f39c12 0px, #f39c12 3px, rgba(255,255,255,0.4) 3px, rgba(255,255,255,0.4) 6px);
+        }
+        .ca-tape-red {
+            background: repeating-linear-gradient(90deg, #e74c3c 0px, #e74c3c 3px, rgba(255,255,255,0.4) 3px, rgba(255,255,255,0.4) 6px);
+        }
+        .ca-tape-blue {
+            background: repeating-linear-gradient(90deg, #3498db 0px, #3498db 3px, rgba(255,255,255,0.4) 3px, rgba(255,255,255,0.4) 6px);
+        }
+        .ca-tape-purple {
+            background: repeating-linear-gradient(90deg, #9b59b6 0px, #9b59b6 3px, rgba(255,255,255,0.4) 3px, rgba(255,255,255,0.4) 6px);
+        }
+
+        /* Cut line */
+        .ca-cut-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 40px 0 28px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: rgba(45, 45, 45, 0.6);
+            letter-spacing: 0.15em;
+        }
+        .ca-cut-line::before,
+        .ca-cut-line::after {
+            content: "";
+            flex: 1;
+            border-bottom: 2px dashed var(--charcoal);
+            opacity: 0.4;
+        }
+
+        /* Section Head */
+        .ca-section-header {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+        .ca-section-badge {
+            display: inline-block;
+            background: var(--charcoal);
+            color: #ffffff;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: 2px solid var(--charcoal);
+            box-shadow: 3px 3px 0px var(--cut-red);
+            transform: rotate(-1deg);
+        }
+        .ca-section-title {
+            font-family: var(--font-serif);
+            font-size: 26px;
+            font-weight: 900;
+            margin-top: 8px;
+            letter-spacing: 0.05em;
+            color: var(--charcoal);
+        }
+
+        /* Header Masthead */
+        .ca-masthead {
+            position: relative;
+            background: var(--card-white);
+            border: 2px solid var(--charcoal);
+            box-shadow: 6px 6px 0px var(--charcoal);
+            padding: 32px 28px 24px;
+            margin-bottom: 36px;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .ca-masthead:hover {
+            transform: translateY(-2px) rotate(-0.5deg);
+            box-shadow: 10px 10px 0px var(--charcoal);
+        }
+        .ca-masthead-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--charcoal);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .ca-issue-tag {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            background: var(--paste-yellow);
+            color: var(--charcoal);
+            padding: 2px 8px;
+            border: 1.5px solid var(--charcoal);
+        }
+        .ca-date-tag {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--charcoal);
+        }
+        .ca-main-title {
+            font-family: var(--font-serif);
+            font-size: 38px;
+            font-weight: 900;
+            line-height: 1.15;
+            color: var(--charcoal);
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+        }
+        @media (min-width: 768px) {
+            .ca-main-title {
+                font-size: 48px;
+            }
+        }
+        .ca-title-cutout {
+            display: inline-block;
+            background: var(--cut-red);
+            color: #ffffff;
+            padding: 0 10px;
+            margin-right: 8px;
+            transform: rotate(-1.5deg);
+            border: 2px solid var(--charcoal);
+            box-shadow: 3px 3px 0px var(--charcoal);
+        }
+        .ca-masthead-desc {
+            font-size: 13px;
+            color: rgba(45, 45, 45, 0.8);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px dashed var(--charcoal);
+            padding-top: 12px;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+        }
+
+        /* Metric Grid */
+        .ca-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+        @media (min-width: 768px) {
+            .ca-metrics-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .ca-metric-card {
+            position: relative;
+            background: var(--bg-paper-alt);
+            border: 2px solid var(--charcoal);
+            box-shadow: 4px 4px 0px var(--charcoal);
+            padding: 16px 14px;
+            text-align: center;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .ca-metric-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 8px 8px 0px var(--charcoal);
+        }
+        .ca-metric-card:active {
+            transform: translateY(1px);
+            box-shadow: 2px 2px 0px var(--charcoal);
+        }
+        .ca-metric-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(45, 45, 45, 0.7);
+            margin-bottom: 4px;
+        }
+        .ca-metric-value {
+            font-family: var(--font-serif);
+            font-size: 30px;
+            font-weight: 900;
+            color: var(--charcoal);
+            line-height: 1.1;
+        }
+        .ca-metric-sub {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: rgba(45, 45, 45, 0.55);
+            margin-top: 4px;
+        }
+
+        /* 24h Activity Chart */
+        .ca-chart-wrap {
+            position: relative;
+            background: var(--card-white);
+            border: 2px solid var(--charcoal);
+            box-shadow: 5px 5px 0px var(--charcoal);
+            padding: 24px 20px 16px;
+            margin-bottom: 36px;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .ca-chart-wrap:hover {
+            transform: translateY(-2px);
+            box-shadow: 8px 8px 0px var(--charcoal);
+        }
+        .ca-chart-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            border-bottom: 1.5px dashed var(--charcoal);
+            padding-bottom: 8px;
+        }
+        .ca-stamp-badge {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border: 1.5px solid var(--charcoal);
+            box-shadow: 2px 2px 0px var(--charcoal);
+            text-transform: uppercase;
+        }
+        .ca-chart-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 130px;
+            padding-top: 16px;
+            border-bottom: 2px solid var(--charcoal);
+            overflow-x: auto;
+        }
+        .ca-chart-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 18px;
+            height: 100%;
+            justify-content: flex-end;
+        }
+        .ca-chart-val {
+            font-size: 9px;
+            color: var(--charcoal);
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+        .ca-chart-track {
+            width: 14px;
+            height: 90px;
+            background: var(--bg-paper-alt);
+            border: 1.5px solid var(--charcoal);
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+        }
+        .ca-chart-fill {
+            width: 100%;
+            border-top: 1.5px solid var(--charcoal);
+            transition: height 0.3s ease-out;
+        }
+        .ca-chart-hour {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-top: 6px;
+        }
+
+        /* Topics */
+        .ca-topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 36px;
+        }
+        .ca-topic-card {
+            position: relative;
+            background: var(--card-white);
+            border: 2px solid var(--charcoal);
+            box-shadow: 5px 5px 0px var(--charcoal);
+            padding: 22px 22px 18px;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .ca-topic-card:hover {
+            transform: translateY(-3px) rotate(-0.5deg);
+            box-shadow: 9px 9px 0px var(--charcoal);
+        }
+        .ca-topic-card:active {
+            transform: translateY(1px);
+            box-shadow: 2px 2px 0px var(--charcoal);
+        }
+        .ca-topic-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .ca-topic-index-badge {
+            background: var(--cut-red);
+            color: #ffffff;
+            border: 2px solid var(--charcoal);
+            box-shadow: 2px 2px 0px var(--charcoal);
+            padding: 2px 8px;
+            transform: rotate(-2deg);
+        }
+        .ca-topic-main-meta {
+            flex: 1;
+        }
+        .ca-topic-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--charcoal);
+            line-height: 1.3;
+            margin-bottom: 4px;
+        }
+        .ca-topic-contributors {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: rgba(45, 45, 45, 0.75);
+        }
+        .ca-tag-stamp {
+            background: var(--paste-yellow);
+            color: var(--charcoal);
+            padding: 1px 5px;
+            border: 1px solid var(--charcoal);
+            font-weight: 700;
+        }
+        .ca-topic-body {
+            position: relative;
+            background: var(--bg-paper);
+            border: 1.5px dashed var(--charcoal);
+            padding: 12px 16px;
+        }
+        .ca-topic-detail-inner {
+            font-size: 14px;
+            line-height: 1.65;
+            color: var(--charcoal);
+        }
+
+        /* User Titles */
+        .ca-title-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+            margin-bottom: 36px;
+        }
+        @media (min-width: 768px) {
+            .ca-title-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .ca-title-card {
+            position: relative;
+            background: var(--card-white);
+            border: 2px solid var(--charcoal);
+            box-shadow: 4px 4px 0px var(--charcoal);
+            padding: 18px;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .ca-title-card:hover {
+            transform: translateY(-3px) rotate(-0.5deg);
+            box-shadow: 8px 8px 0px var(--charcoal);
+        }
+        .ca-title-card-inner {
+            display: flex;
+            gap: 16px;
+        }
+        .ca-avatar-polaroid {
+            width: 76px;
+            flex-shrink: 0;
+            background: var(--bg-paper-alt);
+            border: 1.5px solid var(--charcoal);
+            box-shadow: 2px 2px 0px var(--charcoal);
+            padding: 4px 4px 8px;
+            text-align: center;
+            transform: rotate(-1.5deg);
+        }
+        .ca-avatar-img {
+            width: 66px;
+            height: 66px;
+            object-fit: cover;
+            border: 1px solid var(--charcoal);
+            display: block;
+        }
+        .ca-avatar-placeholder {
+            width: 66px;
+            height: 66px;
+            background: var(--charcoal);
+            color: #ffffff;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ca-polaroid-pin {
+            display: block;
+            font-size: 8px;
+            font-weight: 700;
+            color: rgba(45, 45, 45, 0.6);
+            margin-top: 4px;
+        }
+        .ca-title-info {
+            flex: 1;
+        }
+        .ca-title-name-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .ca-member-name {
+            font-size: 17px;
+            font-weight: 900;
+            color: var(--charcoal);
+        }
+        .ca-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border: 1px solid var(--charcoal);
+            box-shadow: 1.5px 1.5px 0px var(--charcoal);
+            color: #ffffff;
+        }
+        .ca-badge-blue { background: var(--magazine-blue); }
+        .ca-badge-purple { background: var(--fragment-purple); }
+        .ca-title-reason {
+            font-size: 12px;
+            color: rgba(45, 45, 45, 0.85);
+            background: var(--bg-paper);
+            padding: 6px 10px;
+            border: 1px dashed var(--charcoal);
+            line-height: 1.5;
+        }
+
+        /* Quotes */
+        .ca-quote-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 36px;
+        }
+        .ca-quote-card {
+            position: relative;
+            background: var(--card-white);
+            border: 2px solid var(--charcoal);
+            box-shadow: 5px 5px 0px var(--charcoal);
+            padding: 20px 22px;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .ca-quote-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 9px 9px 0px var(--charcoal);
+        }
+        .ca-quote-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .ca-quote-avatar-frame {
+            width: 40px;
+            height: 40px;
+            border: 1.5px solid var(--charcoal);
+            box-shadow: 2px 2px 0px var(--charcoal);
+            overflow: hidden;
+        }
+        .ca-quote-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .ca-quote-meta {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .ca-quote-sender {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--charcoal);
+        }
+        .ca-quote-stamp {
+            font-size: 10px;
+            font-weight: 700;
+            background: var(--paste-yellow);
+            color: var(--charcoal);
+            padding: 1px 6px;
+            border: 1px solid var(--charcoal);
+        }
+        .ca-quote-statement {
+            font-size: 18px;
+            font-weight: 700;
+            font-style: italic;
+            color: var(--charcoal);
+            line-height: 1.45;
+            margin: 10px 0 14px;
+            padding-left: 14px;
+            border-left: 4px solid var(--cut-red);
+        }
+        .ca-quote-critique-ticket {
+            background: var(--bg-paper);
+            border: 1.5px dashed var(--charcoal);
+            padding: 10px 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .ca-ticket-stamp {
+            font-size: 10px;
+            font-weight: 700;
+            background: var(--charcoal);
+            color: #ffffff;
+            padding: 1px 5px;
+            white-space: nowrap;
+        }
+        .ca-ticket-content {
+            font-size: 13px;
+            color: rgba(45, 45, 45, 0.9);
+            line-height: 1.55;
+        }
+
+        /* Quality Assessment */
+        .ca-quality-summary {
+            position: relative;
+            background: var(--card-white);
+            border: 2px solid var(--charcoal);
+            box-shadow: 4px 4px 0px var(--charcoal);
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .ca-quality-summary:hover {
+            transform: translateY(-2px);
+            box-shadow: 7px 7px 0px var(--charcoal);
+        }
+        .ca-summary-badge {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--cut-red);
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+        }
+        .ca-summary-text {
+            font-size: 14px;
+            line-height: 1.65;
+            color: var(--charcoal);
+        }
+        .ca-dim-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+        @media (min-width: 768px) {
+            .ca-dim-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .ca-dim-card {
+            background: var(--bg-paper-alt);
+            border: 2px solid var(--charcoal);
+            box-shadow: 3px 3px 0px var(--charcoal);
+            padding: 14px 16px;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .ca-dim-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px var(--charcoal);
+        }
+        .ca-dim-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+        .ca-dim-name {
+            font-size: 15px;
+            font-weight: 900;
+            color: var(--charcoal);
+        }
+        .ca-dim-ratio {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--charcoal);
+        }
+        .ca-dim-track {
+            height: 14px;
+            background: var(--card-white);
+            border: 1.5px solid var(--charcoal);
+            position: relative;
+            margin-bottom: 8px;
+        }
+        .ca-dim-fill {
+            height: 100%;
+            border-right: 1.5px solid var(--charcoal);
+        }
+        .ca-dim-comment {
+            font-size: 12px;
+            color: rgba(45, 45, 45, 0.75);
+            line-height: 1.45;
+        }
+        .ca-comment-arrow {
+            color: var(--cut-red);
+            font-weight: 700;
+        }
+
+        /* Footer */
+        .ca-footer {
+            margin-top: 48px;
+            border-top: 2px solid var(--charcoal);
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: rgba(45, 45, 45, 0.7);
+        }
+        @media (min-width: 768px) {
+            .ca-footer {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+        .ca-token-badge {
+            background: var(--bg-paper-alt);
+            border: 1px solid var(--charcoal);
+            padding: 2px 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ca-web-wrap">
+        <!-- 1) Header Masthead -->
+        <div class="ca-masthead">
+            <div class="ca-tape ca-tape-yellow -top-3 left-12 -rotate-2"></div>
+            <div class="ca-tape ca-tape-red -top-3 right-12 rotate-3"></div>
+            <div class="ca-masthead-top">
+                <span class="ca-issue-tag">ZINE SPECIAL // #{{ current_date }}</span>
+                <span class="ca-date-tag">{{ current_datetime }}</span>
+            </div>
+            <h1 class="ca-main-title">
+                <span class="ca-title-cutout">剪报</span>群聊日常纪录
+            </h1>
+            <div class="ca-masthead-desc">
+                <span>COLLAGE ART DESIGN SYSTEM</span>
+                <span>VOL. 03 // 混合材料美学</span>
+            </div>
+        </div>
+
+        <!-- 2) Key Metrics -->
+        <div class="ca-metrics-grid">
+            <div class="ca-metric-card">
+                <div class="ca-metric-label">MESSAGES</div>
+                <div class="ca-metric-value">{{ message_count }}</div>
+                <div class="ca-metric-sub">今日消息数</div>
+            </div>
+            <div class="ca-metric-card">
+                <div class="ca-metric-label">SPEAKERS</div>
+                <div class="ca-metric-value">{{ participant_count }}</div>
+                <div class="ca-metric-sub">发言总人数</div>
+            </div>
+            <div class="ca-metric-card">
+                <div class="ca-metric-label">CHARACTERS</div>
+                <div class="ca-metric-value">{{ total_characters }}</div>
+                <div class="ca-metric-sub">生成总字数</div>
+            </div>
+            <div class="ca-metric-card">
+                <div class="ca-metric-label">PRIME TIME</div>
+                <div class="ca-metric-value" style="font-size: 20px; margin-top: 4px;">{{ most_active_period }}</div>
+                <div class="ca-metric-sub">最活跃时段</div>
+            </div>
+        </div>
+
+        <!-- 3) 24h Timeline Chart -->
+        <div class="ca-section-header">
+            <span class="ca-section-badge">TIMELINE</span>
+            <div class="ca-section-title">时间的剪影 · 24小时轨迹</div>
+        </div>
+        {{ hourly_chart_html | safe }}
+
+        <div class="ca-cut-line">✂ CUT HERE FOR ARCHIVE</div>
+
+        <!-- 4) Topics -->
+        <div class="ca-section-header">
+            <span class="ca-section-badge">TOPICS</span>
+            <div class="ca-section-title">话题的拼图 · 焦点纪实</div>
+        </div>
+        {{ topics_html | safe }}
+
+        <div class="ca-cut-line">✂ EDITORIAL SELECTION</div>
+
+        <!-- 5) User Titles -->
+        <div class="ca-section-header">
+            <span class="ca-section-badge">MEMBERS</span>
+            <div class="ca-section-title">群友的侧影 · 拍立得造像</div>
+        </div>
+        {{ titles_html | safe }}
+
+        <div class="ca-cut-line">✂ DIALOGUE ARCHIVE</div>
+
+        <!-- 6) Quotes -->
+        <div class="ca-section-header">
+            <span class="ca-section-badge">QUOTES</span>
+            <div class="ca-section-title">金句与回响 · 现场发言</div>
+        </div>
+        {{ quotes_html | safe }}
+
+        <div class="ca-cut-line">✂ REPORT ANALYSIS</div>
+
+        <!-- 7) Quality -->
+        <div class="ca-section-header">
+            <span class="ca-section-badge">QUALITY</span>
+            <div class="ca-section-title">群聊质量 · 维度透视</div>
+        </div>
+        {{ chat_quality_html | safe }}
+
+        <!-- 8) Footer -->
+        <div class="ca-footer">
+            <div class="ca-footer-left">
+                <span>AstrBot Group Daily Analysis · Collage Art Edition</span>
+            </div>
+            <div class="ca-footer-right">
+                <span class="ca-token-badge font-mono">TOKENS: {{ total_tokens }} (P:{{ prompt_tokens }} / C:{{ completion_tokens }})</span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
