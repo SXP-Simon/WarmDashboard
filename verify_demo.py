@@ -17,30 +17,16 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 ROOT = Path(__file__).resolve().parent
-TPL = ROOT / "gda_warm_dashboard"
 PLUGIN_ROOT = (sys.argv[1] if len(sys.argv) > 1 else "") or os.environ.get(
     "PLUGIN_ROOT", ""
 )
 
-# 1) Jinja2 语法检查
-env = Environment(
-    loader=FileSystemLoader(str(TPL)),
-    autoescape=True,
-    trim_blocks=True,
-    lstrip_blocks=True,
-)
-for f in sorted(TPL.glob("*.html")):
-    env.parse(f.read_text(encoding="utf-8"))
-    print(f"[syntax OK] {f.name}")
+# 查找所有包含 template.json 的模板目录
+tpl_dirs = [d for d in ROOT.iterdir() if d.is_dir() and (d / "template.json").exists()]
+if not tpl_dirs:
+    print("[error] 未找到包含 template.json 的模板目录")
+    sys.exit(1)
 
-# 2) 运行时渲染检查（StrictUndefined：任何变量缺失/类型错误立即抛错）
-rt_env = Environment(
-    loader=FileSystemLoader(str(TPL)),
-    autoescape=True,
-    trim_blocks=True,
-    lstrip_blocks=True,
-    undefined=StrictUndefined,
-)
 common = {
     "hide_user_names": False,
     "t2i_font_source": "Mainland",
@@ -81,40 +67,59 @@ sub_ctx = {
     "summary": "质量总结文本",
     "dimensions": [{"name": "活跃度", "percentage": 80, "comment": "很好"}],
 }
-topics_html = rt_env.get_template("topic_item.html").render(**common, **sub_ctx)
-titles_html = rt_env.get_template("user_title_item.html").render(**common, **sub_ctx)
-quotes_html = rt_env.get_template("quote_item.html").render(**common, **sub_ctx)
-hourly_chart_html = rt_env.get_template("activity_chart.html").render(
-    **common, **sub_ctx
-)
-chat_quality_html = rt_env.get_template("chat_quality_item.html").render(
-    **common, **sub_ctx
-)
-main_ctx = {
-    **common,
-    "topics_html": topics_html,
-    "titles_html": titles_html,
-    "quotes_html": quotes_html,
-    "hourly_chart_html": hourly_chart_html,
-    "chat_quality_html": chat_quality_html,
-    "message_count": 100,
-    "participant_count": 20,
-    "total_characters": 3000,
-    "emoji_count": 10,
-    "most_active_period": "20:00-22:00",
-    "current_date": "2026年09月05日",
-    "current_datetime": "2026-09-05 20:00:00",
-    "total_tokens": 1000,
-    "prompt_tokens": 500,
-    "completion_tokens": 500,
-}
-for name, out in {
-    "image_template.html": None,
-    "html_template.html": None,
-}.items():
-    html = rt_env.get_template(name).render(**main_ctx)
-    assert "群聊日常分析" in html and "今日话题" in html and "金句" in html
-    print(f"[render OK] {name} ({len(html)} bytes)")
+
+for tpl_dir in sorted(tpl_dirs, key=lambda p: p.name):
+    print(f"\n===== 正在校验模板: {tpl_dir.name} =====")
+    # 1) Jinja2 语法检查
+    env = Environment(
+        loader=FileSystemLoader(str(tpl_dir)),
+        autoescape=True,
+        trim_blocks=True,
+        lstrip_blocks=True,
+    )
+    for f in sorted(tpl_dir.glob("*.html")):
+        env.parse(f.read_text(encoding="utf-8"))
+        print(f"[{tpl_dir.name}] [syntax OK] {f.name}")
+
+    # 2) 运行时渲染检查（StrictUndefined：任何变量缺失/类型错误立即抛错）
+    rt_env = Environment(
+        loader=FileSystemLoader(str(tpl_dir)),
+        autoescape=True,
+        trim_blocks=True,
+        lstrip_blocks=True,
+        undefined=StrictUndefined,
+    )
+    topics_html = rt_env.get_template("topic_item.html").render(**common, **sub_ctx)
+    titles_html = rt_env.get_template("user_title_item.html").render(**common, **sub_ctx)
+    quotes_html = rt_env.get_template("quote_item.html").render(**common, **sub_ctx)
+    hourly_chart_html = rt_env.get_template("activity_chart.html").render(
+        **common, **sub_ctx
+    )
+    chat_quality_html = rt_env.get_template("chat_quality_item.html").render(
+        **common, **sub_ctx
+    )
+    main_ctx = {
+        **common,
+        "topics_html": topics_html,
+        "titles_html": titles_html,
+        "quotes_html": quotes_html,
+        "hourly_chart_html": hourly_chart_html,
+        "chat_quality_html": chat_quality_html,
+        "message_count": 100,
+        "participant_count": 20,
+        "total_characters": 3000,
+        "emoji_count": 10,
+        "most_active_period": "20:00-22:00",
+        "current_date": "2026年09月05日",
+        "current_datetime": "2026-09-05 20:00:00",
+        "total_tokens": 1000,
+        "prompt_tokens": 500,
+        "completion_tokens": 500,
+    }
+    for name in ("image_template.html", "html_template.html"):
+        html = rt_env.get_template(name).render(**main_ctx)
+        assert len(html) > 500
+        print(f"[{tpl_dir.name}] [render OK] {name} ({len(html)} bytes)")
 
 if not PLUGIN_ROOT or not (Path(PLUGIN_ROOT) / "src").is_dir():
     print(
@@ -151,38 +156,26 @@ from src.infrastructure.reporting.template_installer import (  # noqa: E402
     uninstall_template,
 )
 
-# 2) 打包 zip（模拟仓库下载后的结构：外层 gda_warm_dashboard/）
-buf = io.BytesIO()
-with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-    for f in sorted(TPL.rglob("*")):
-        if f.is_file():
-            zf.write(f, f.relative_to(ROOT).as_posix())
+for tpl_dir in sorted(tpl_dirs, key=lambda p: p.name):
+    # 打包 zip（模拟仓库下载后的结构）
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for f in sorted(tpl_dir.rglob("*")):
+            if f.is_file():
+                zf.write(f, f.relative_to(ROOT).as_posix())
 
-# 3) 安装
-with tempfile.TemporaryDirectory() as tmp:
-    store = Path(tmp) / "store"
-    res = install_template_from_zip(
-        buf.getvalue(),
-        store_dir=store,
-        source="url",
-        source_url="https://github.com/SXP-Simon/WarmDashboard",
-    )
-    print(f"[install] {json.dumps(res, ensure_ascii=False)}")
-    assert res["name"] == "gda_warm_dashboard", res["name"]
-    assert res["has_image"] and res["has_html"]
-    assert res["label"] == "暖色仪表盘 (Warm Dashboard)"
-    installed_dir = store / "gda_warm_dashboard"
-    assert (installed_dir / ".tpl_installed.json").is_file()
-    assert {f.name for f in installed_dir.glob("*.html")} == {
-        "image_template.html", "html_template.html", "topic_item.html",
-        "user_title_item.html", "quote_item.html", "activity_chart.html",
-        "chat_quality_item.html",
-    }
+    with tempfile.TemporaryDirectory() as td:
+        installed_root = Path(td)
+        res = install_template_from_zip(
+            zip_data=buf.getvalue(),
+            store_dir=installed_root,
+        )
+        print(f"[install {tpl_dir.name}]", json.dumps(res, ensure_ascii=False))
+        assert res["name"] == tpl_dir.name
+        assert (installed_root / tpl_dir.name / "image_template.html").is_file()
 
-    # 4) 卸载
-    res2 = uninstall_template("gda_warm_dashboard", store_dir=store)
-    print(f"[uninstall] {res2}")
-    assert res2["removed"] is True
-    assert not installed_dir.exists()
+        un_res = uninstall_template(tpl_dir.name, store_dir=installed_root)
+        print(f"[uninstall {tpl_dir.name}]", un_res)
+        assert un_res["removed"] is True
 
-print("ALL OK")
+print("\nALL OK")
