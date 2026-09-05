@@ -1,106 +1,158 @@
-# 群聊日常分析 · 报告视觉模板（暖色仪表盘 Warm Dashboard）
+# 群聊日常分析 · 视觉主题模板库 (WarmDashboard)
 
-本仓库是 [astrbot_plugin_qq_group_daily_analysis](https://github.com/SXP-Simon/astrbot_plugin_qq_group_daily_analysis) 的 **报告视觉模板仓库**。
+本仓库是 [astrbot_plugin_qq_group_daily_analysis](https://github.com/SXP-Simon/astrbot_plugin_qq_group_daily_analysis) 插件的**官方/精选视觉主题模板库**。
 
-内置模板：**`gda_warm_dashboard`（暖色仪表盘 Warm Dashboard）** —— 温暖舒适的珊瑚赤陶色背景、奶油白大圆角卡片、柔和漫射阴影，搭配青绿与金黄点缀，打造舒适专业的数据可视化体验。
+仓库当前收录 **两套经过严苛无头渲染调优与完整端到端测试的高质量视觉风格模板**：
 
-> 预览：
-> ![暖色仪表盘预览图](assets/gda_warm_dashboard-demo-thumb.jpg)
+| 模板标识 | 风格名称 | 核心设计哲学与视觉特点 | 效果速览 |
+| :--- | :--- | :--- | :---: |
+| **`gda_warm_dashboard`** | **暖色仪表盘 (Warm Dashboard)** | 温暖舒适的珊瑚赤陶底色、奶油白大圆角卡片、漫射柔光阴影，搭配青绿与金黄的高亮配色，营造亲和专业的数据仪表盘体验。 | [查看效果](#1-暖色仪表盘-gda_warm_dashboard) |
+| **`gda_japanese_fresh`** | **日系清新风 (Japanese Fresh)** | 以「間 (Ma)」留白哲学与侘寂美学为核心，米白纸质纹理、发丝级淡雅边框、单株植物线描点缀，沉静治愈的呼吸感排版。 | [查看效果](#2-日系清新风-gda_japanese_fresh) |
+
+---
+
+## 模板视觉展示
+
+### 1. 暖色仪表盘 (`gda_warm_dashboard`)
+
+> **设计核心**：珊瑚赤陶底色 (`#d4a088`)、奶油白圆角卡片 (`#faf8f5`)、柔和漫射阴影 (`shadow-xl shadow-black/8`)、青绿 (`#4a9d9a`) 与金黄 (`#e8b86d`) 数据图表点缀。
+
+![暖色仪表盘预览图](assets/gda_warm_dashboard-demo-thumb.jpg)
+
+* 完整无损高清长图：[assets/gda_warm_dashboard-demo.jpg](assets/gda_warm_dashboard-demo.jpg)
+
+---
+
+### 2. 日系清新风 (`gda_japanese_fresh`)
+
+> **设计核心**：米白底色 (`#fafaf8`) 结合和纸微肌理、极细发丝级中性边框 (`border-[#d4d4cf]/40`)、植物线描装饰图标、治愈系天青 (`#64b5f6`) 与薄荷绿 (`#98d8c8`) 柔和渐变。
+
+![日系清新风预览图](assets/gda_japanese_fresh-demo-thumb.jpg)
+
+* 完整无损高清长图：[assets/gda_japanese_fresh-demo.jpg](assets/gda_japanese_fresh-demo.jpg)
+
+---
+
+> 📌 **图片资产规范说明**：
+> - `assets/*-demo-thumb.jpg` —— 本 README 展示用的缩略图（宽度 420px），用于仓库首页快速预览。
+> - `assets/*-demo.jpg` —— 完整长图（750px 宽无损高质），供查看全部排版与细节。
+> - `<template_name>/preview.jpg` —— 随模板打包随行的模板预览图：用户在 AstrBot 中使用 QQ `查看模板` 命令或进入插件 WebUI 模板画廊时，将即时显示该图。
 >
-> 完整长图见 [assets/gda_warm_dashboard-demo.jpg](assets/gda_warm_dashboard-demo.jpg)。
+> 均可通过根目录脚本 `python generate_preview.py` 一键自动生成。
 
-> 📌 **图片文件说明**：
-> - `assets/gda_warm_dashboard-demo-thumb.jpg` —— **本 README 展示用的缩略图**（宽 420），用于仓库首页快速预览效果。
-> - `assets/gda_warm_dashboard-demo.jpg` —— **完整长图**（750 宽无损高质），供查看全部细节。
-> - `gda_warm_dashboard/preview.jpg` —— **随模板打包的预览图**：用户安装本模板后，QQ `/查看模板` 与 WebUI 画廊显示的就是该图。
->
-> 三者均由 `generate_preview.py` 一次生成。
+---
 
-## 一键安装（推荐）
+## 一键安装与使用
 
-在插件 Web 控制台 → 配置页 → 模板选择器旁「安装模板」→ GitHub 链接标签页：
+### 方式一：Web 控制台一键拉取（推荐）
 
-```
-https://github.com/SXP-Simon/WarmDashboard
-```
+1. 打开 AstrBot 插件 Web 控制台 → **群聊日常分析配置页**。
+2. 在模板选择器旁点击 **「安装模板」** → 切换至 **「GitHub / Git 仓库安装」** 标签页。
+3. 填入本仓库地址：
+   ```text
+   https://github.com/SXP-Simon/WarmDashboard
+   ```
+4. 点击安装。插件内置安装器会自动拉取源码并识别仓库内的所有模板目录（`gda_warm_dashboard/` 与 `gda_japanese_fresh/`），完成校验与注册，**全程热加载，无需重启机器人**。
 
-插件会自动下载源码、识别 `gda_warm_dashboard/` 模板目录并安装，**无需重启机器人**。
-也可以在本仓库页面点 `Code ▾ → Download ZIP`，然后在「安装模板 → 上传 zip」直接上传。
+### 方式二：下载 ZIP 手动上传
 
-> 安装成功后模板会出现在「断点续跑」「免 Token 切换主题重绘」下拉中；
-> 卸载请用同一入口旁的「卸载模板」（内置模板不可卸载）。
+1. 在本 GitHub 仓库页面点击 **`Code` ▾ → `Download ZIP`**。
+2. 进入插件管理面板的 **「安装模板 → 上传 ZIP」**，上传下载的压缩包即可。
 
-## 目录结构
+> 💡 **使用提示**：
+> - 安装成功后，新模板将即刻出现在**「报告模板选择」**、**「断点续跑」**与**「免 Token 切换主题重绘」**的下拉菜单中。
+> - 如需卸载，直接在同一入口旁的「卸载模板」列表中点击删除（内置模板不可卸载）。
 
-```
+---
+
+## 仓库目录结构
+
+```text
 WarmDashboard/
-├── README.md                # 本说明
-├── AGENTS.md                # AI 与模板开发规范
-├── gda_warm_dashboard/      # 模板根目录（zip 打包时打包这一层）
-│   ├── image_template.html  # 长图海报主骨架（750px）
-│   ├── html_template.html   # 独立网页主骨架（响应式）
-│   ├── topic_item.html      # 话题列表模块
-│   ├── user_title_item.html # 群友称号与画像模块
-│   ├── quote_item.html      # 金句与锐评模块
-│   ├── activity_chart.html  # 24h 活跃轨迹模块
-│   ├── chat_quality_item.html # 群聊质量锐评模块
-│   └── template.json        # 模板显示元信息
-├── assets/                  # 预览图与素材
-├── generate_preview.py      # 本地预览图渲染脚本
-└── verify_demo.py           # 模板语法与安装端到端校验脚本
+├── README.md                      # 仓库综合说明文档
+├── AGENTS.md                      # 双设计系统规范 (Japanese Fresh & Warm Dashboard)
+├── gda_warm_dashboard/            # [模板一] 暖色仪表盘 (Warm Dashboard)
+│   ├── image_template.html        # 长图海报主骨架 (750px Headless 优化)
+│   ├── html_template.html         # 独立网页主骨架 (移动/桌面自适应响应式)
+│   ├── topic_item.html            # 话题列表子组件
+│   ├── user_title_item.html       # 群友称号与侧影子组件
+│   ├── quote_item.html            # 金句与锐评子组件
+│   ├── activity_chart.html        # 24h 活跃度柱状图子组件
+│   ├── chat_quality_item.html     # 群聊质量多维锐评子组件
+│   ├── template.json              # 模板元数据与能力声明
+│   └── preview.jpg                # 模板内置缩略预览图
+├── gda_japanese_fresh/            # [模板二] 日系清新风 (Japanese Fresh)
+│   ├── image_template.html        # 长图海报主骨架
+│   ├── html_template.html         # 独立网页主骨架
+│   ├── topic_item.html            # 话题列表子组件（带植物叶片线描）
+│   ├── user_title_item.html       # 群友侧影子组件
+│   ├── quote_item.html            # 金句子组件（虚线极简微光卡片）
+│   ├── activity_chart.html        # 24h 活跃度柱状图子组件（发丝底槽）
+│   ├── chat_quality_item.html     # 群聊质量多维子组件
+│   ├── template.json              # 模板元数据与能力声明
+│   └── preview.jpg                # 模板内置缩略预览图
+├── assets/                        # 文档与 Releases 高清演示素材
+├── generate_preview.py            # 跨平台无头浏览器预览生成脚本
+└── verify_demo.py                 # Jinja2 语法、严格渲染与安装器端到端测试脚本
 ```
 
-## 设计规范与配色系统
+---
 
-本模板严格遵循 **Warm Dashboard（暖色仪表盘）** 设计系统规范：
+## 视觉规范与自定义
 
-| 角色 | 色值 / Class | 用途 |
-| --- | --- | --- |
-| **背景主色** | `#d4a088` (珊瑚/赤陶) | 页面整体温暖底色 |
-| **背景辅色** | `#faf8f5` (奶油白) | 主内容卡片背景 |
-| **卡片内层** | `#ffffff` (纯白) | 卡片内部小组件与气泡 |
-| **主要强调色** | `#4a9d9a` (青绿) | 主强调、徽章、正向数据高亮 |
-| **图表强调色** | `#e8b86d` (金黄) | 柱状图、峰值高亮、统计重点 |
-| **次要强调色** | `#c17767` (珊瑚红) | 警示、MBTI 标签、锐评强调 |
-| **辅助修饰色** | `#6b8e8e` (灰绿) | 次要元素与辅助边框 |
-| **正文主色** | `#1f2937` (深灰 text-gray-800) | 标题与重点文字 |
-| **正文次色** | `#4b5563` (中灰 text-gray-600) | 正文描述文字 |
-| **底色文字** | `#ffffff` (纯白) | 暖色底色上的大标题与日期 |
+每个模板的视觉变量均高度解耦，集中在各自 `image_template.html` / `html_template.html` 顶部的 `:root { ... }` 中：
 
-### 视觉特性
-- **大圆角**：卡片采用 `24px` (`rounded-3xl`) 大圆角，内部组件采用 `16px` (`rounded-2xl`)。
-- **漫射阴影**：柔和自然的扩散阴影 `0 16px 32px -4px rgba(0, 0, 0, 0.08)`，杜绝硬边阴影。
-- **精致微交互**：网页端卡片悬停轻微上浮 `hover:-translate-y-0.5`，图表悬浮柔光反馈。
-
-## 快速自定义
-
-所有视觉均由 `gda_warm_dashboard/image_template.html` 头部 `:root { ... }` 的 CSS 变量控制：
-
+### 暖色仪表盘关键 Token (`gda_warm_dashboard`)
 ```css
 :root {
-    --bg-warm: #d4a088;        /* 主背景珊瑚赤陶色 */
-    --card-cream: #faf8f5;     /* 卡片奶油白 */
-    --accent-teal: #4a9d9a;    /* 主要强调青绿色 */
-    --accent-gold: #e8b86d;    /* 图表金黄色 */
-    --accent-coral: #c17767;   /* 次要强调珊瑚色 */
-    --text-primary: #1f2937;   /* 主文字深灰 */
-    --text-secondary: #4b5563; /* 次要文字 */
-    --radius-card: 24px;       /* 主卡片圆角 */
+    --bg-terracotta: #d4a088;        /* 主背景珊瑚赤陶色 */
+    --card-cream: #faf8f5;           /* 卡片奶油白 */
+    --accent-teal: #4a9d9a;          /* 主强调青绿色 */
+    --accent-gold: #e8b86d;          /* 图表金黄色 */
+    --accent-coral: #c17767;         /* 次要强调珊瑚红 */
+    --text-main: #1f2937;            /* 深灰文本 text-gray-800 */
+    --radius-main: 28px;             /* 大圆角 */
 }
 ```
 
-## 自检与预览脚本
-
-仓库根提供 `verify_demo.py` 与 `generate_preview.py`：
-
-```bash
-# 1) 校验模板语法与严格运行时渲染
-python verify_demo.py
-
-# 2) 生成高质预览截图与缩略图
-python generate_preview.py
+### 日系清新风关键 Token (`gda_japanese_fresh`)
+```css
+:root {
+    --bg-rice: #fafaf8;              /* 和纸米白底色 */
+    --bg-card: #ffffff;              /* 卡片纯白 */
+    --sky-blue: #64b5f6;             /* 晴空蓝强调色 */
+    --mint-green: #98d8c8;           /* 薄荷绿强调色 */
+    --gentle-pink: #ffb7c5;          /* 柔粉点缀色 */
+    --text-main: #4a5568;            /* 炭灰正文 */
+    --text-secondary: #7a8a9e;       /* 次要文案色 */
+    --border-hairline: rgba(212, 212, 207, 0.4); /* 发丝级边框 */
+    --radius-gentle: 18px;           /* 柔和微圆角 */
+}
 ```
 
-## 许可
+> 详细的 Tailwind Token 字典、绝对禁止规则（Forbidden）与 Hard Prompt 请查阅 [AGENTS.md](AGENTS.md)。
 
-MIT License
+---
+
+## 自动化测试与预览工具
+
+本仓库自带完备的本地校验工具，方便二次开发与定制：
+
+```bash
+# 1) 语法与多模板严格渲染校验（若传入插件路径，还会测试打包→安装→卸载端到端）
+python verify_demo.py
+# 或传入插件根目录进行完整联调测试：
+python verify_demo.py path/to/astrbot_plugin_qq_group_daily_analysis
+
+# 2) 重新生成所有模板的预览长图与缩略图（依赖本地 Chrome 或 Edge）
+python generate_preview.py
+
+# 也可以仅为特定模板生成：
+python generate_preview.py gda_japanese_fresh
+```
+
+---
+
+## 许可证
+
+[MIT License](LICENSE)
