@@ -17,7 +17,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 ROOT = Path(__file__).resolve().parent
-TPL = ROOT / "gda_sky_diary"
+TPL = ROOT / "gda_warm_dashboard"
 PLUGIN_ROOT = (sys.argv[1] if len(sys.argv) > 1 else "") or os.environ.get(
     "PLUGIN_ROOT", ""
 )
@@ -102,8 +102,8 @@ main_ctx = {
     "total_characters": 3000,
     "emoji_count": 10,
     "most_active_period": "20:00-22:00",
-    "current_date": "2026年08月01日",
-    "current_datetime": "2026-08-01 20:00:00",
+    "current_date": "2026年09月05日",
+    "current_datetime": "2026-09-05 20:00:00",
     "total_tokens": 1000,
     "prompt_tokens": 500,
     "completion_tokens": 500,
@@ -151,7 +151,7 @@ from src.infrastructure.reporting.template_installer import (  # noqa: E402
     uninstall_template,
 )
 
-# 2) 打包 zip（模拟仓库下载后的结构：外层 gda_sky_diary/）
+# 2) 打包 zip（模拟仓库下载后的结构：外层 gda_warm_dashboard/）
 buf = io.BytesIO()
 with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
     for f in sorted(TPL.rglob("*")):
@@ -165,13 +165,13 @@ with tempfile.TemporaryDirectory() as tmp:
         buf.getvalue(),
         store_dir=store,
         source="url",
-        source_url="https://github.com/x/daily-analysis-report-theme",
+        source_url="https://github.com/SXP-Simon/WarmDashboard",
     )
     print(f"[install] {json.dumps(res, ensure_ascii=False)}")
-    assert res["name"] == "gda_sky_diary", res["name"]
+    assert res["name"] == "gda_warm_dashboard", res["name"]
     assert res["has_image"] and res["has_html"]
-    assert res["label"] == "天空日记 (Sky Diary)"
-    installed_dir = store / "gda_sky_diary"
+    assert res["label"] == "暖色仪表盘 (Warm Dashboard)"
+    installed_dir = store / "gda_warm_dashboard"
     assert (installed_dir / ".tpl_installed.json").is_file()
     assert {f.name for f in installed_dir.glob("*.html")} == {
         "image_template.html", "html_template.html", "topic_item.html",
@@ -180,7 +180,7 @@ with tempfile.TemporaryDirectory() as tmp:
     }
 
     # 4) 卸载
-    res2 = uninstall_template("gda_sky_diary", store_dir=store)
+    res2 = uninstall_template("gda_warm_dashboard", store_dir=store)
     print(f"[uninstall] {res2}")
     assert res2["removed"] is True
     assert not installed_dir.exists()

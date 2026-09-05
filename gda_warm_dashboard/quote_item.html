@@ -1,0 +1,25 @@
+{% if quotes %}
+<div class="section-title">
+    <span class="section-title-icon"></span>
+    <span>今日金句</span>
+</div>
+<div class="quote-list">
+    {% for quote in quotes %}
+    <div class="quote-wrapper avoid-break">
+        <div class="q-flex">
+            {% if quote.avatar_url %}
+            <img class="q-avatar" src="{{ quote.avatar_url }}" alt="头像">
+            {% endif %}
+            <div class="q-content">
+                <div class="q-sender">{{ quote.sender }}</div>
+                <div class="q-bubble">{{ quote.content }}</div>
+                <div class="q-note">
+                    <span class="note-label">✨ AI 锐评：</span>
+                    <span class="note-text">{{ quote.reason | safe }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

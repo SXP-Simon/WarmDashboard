@@ -1,9 +1,9 @@
-"""生成模板预览图：渲染 image_template.html → 无头浏览器截图 → 白边裁剪 → JPEG。
+"""生成模板预览图：渲染 image_template.html → 无头浏览器截图 → 底部背景裁剪 → JPEG。
 
 用法:
     python generate_preview.py
 
-输出: assets/gda_sky_diary-demo.jpg
+输出: assets/gda_warm_dashboard-demo.jpg
 依赖: 无头浏览器（Chrome/Edge），可选 PIL（环境无 PIL 时保留 PNG）。
 """
 import base64
@@ -15,11 +15,11 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 ROOT = Path(__file__).resolve().parent
-TPL = ROOT / "gda_sky_diary"
+TPL = ROOT / "gda_warm_dashboard"
 OUT_DIR = ROOT / "assets"
-OUT_JPG = OUT_DIR / "gda_sky_diary-demo.jpg"
-OUT_THUMB = OUT_DIR / "gda_sky_diary-demo-thumb.jpg"
-OUT_PNG = OUT_DIR / "gda_sky_diary-demo.png"
+OUT_JPG = OUT_DIR / "gda_warm_dashboard-demo.jpg"
+OUT_THUMB = OUT_DIR / "gda_warm_dashboard-demo-thumb.jpg"
+OUT_PNG = OUT_DIR / "gda_warm_dashboard-demo.png"
 
 # ---------- 1) 构造示例数据并渲染 ----------
 def svg_avatar(color: str) -> str:
@@ -56,9 +56,9 @@ sub_ctx = {
         },
         {
             "index": 2,
-            "topic": {"topic": "新版本功能讨论"},
+            "topic": {"topic": "新版本功能与设计讨论"},
             "contributors": "阿伟、小美",
-            "detail": "建议把聊天记录导出做成 markdown，被采纳了！",
+            "detail": "建议把聊天记录导出做成暖色仪表盘可视化，已被采纳并推进！",
         },
     ],
     "titles": [
@@ -67,7 +67,7 @@ sub_ctx = {
             "title": "话题发动机",
             "mbti": "ENFP",
             "reason": "几乎每个话题都由 TA 开启，是群里的气氛担当。",
-            "avatar_data": svg_avatar("#4a9fd8"),
+            "avatar_data": svg_avatar("#4a9d9a"),
             "profile_display": "ENFP",
         },
         {
@@ -75,7 +75,7 @@ sub_ctx = {
             "title": "深夜守望者",
             "mbti": "ISTP",
             "reason": "凌晨 1 点的群里，总能看到 TA 的回复。",
-            "avatar_data": svg_avatar("#f6a940"),
+            "avatar_data": svg_avatar("#e8b86d"),
             "profile_display": "ISTP",
         },
         {
@@ -83,31 +83,31 @@ sub_ctx = {
             "title": "冷场救星",
             "mbti": "INFJ",
             "reason": "擅长在话题冷却时丢出新的讨论点。",
-            "avatar_data": svg_avatar("#5cbf8a"),
+            "avatar_data": svg_avatar("#c17767"),
             "profile_display": "INFJ",
         },
     ],
     "quotes": [
         {
-            "content": "今天真开心，感觉自己又变聪明了一点",
+            "content": "今天真开心，感觉自己又变聪明了一点！",
             "sender": "小红",
             "reason": "典型的“学点新东西就膨胀”式自我鼓励，已被群友习惯性点赞。",
-            "avatar_url": svg_avatar("#f6a940"),
+            "avatar_url": svg_avatar("#e8b86d"),
         },
         {
             "content": "猫又踩我键盘了！！",
             "sender": "阿伟",
             "reason": "猫：这键盘手感不错，以后归我了。",
-            "avatar_url": svg_avatar("#5cbf8a"),
+            "avatar_url": svg_avatar("#c17767"),
         },
     ],
-    "chart_data": [{"hour": i, "count": i, "percentage": i * 4} for i in range(24)],
+    "chart_data": [{"hour": i, "count": i * 3 % 20 + 2, "percentage": min(100, (i * 3 % 20 + 2) * 5)} for i in range(24)],
     "title": "今日群聊质量锐评",
     "subtitle": "总体氛围极佳",
-    "summary": "全群保持高热度互动，深夜回血、白天封神，只差亿点点正经。",
+    "summary": "全群保持高热度互动，温暖亲和、白天封神，只差亿点点正经。",
     "dimensions": [
         {"name": "活跃度", "percentage": 92, "comment": "全天无冷场"},
-        {"name": "话题深度", "percentage": 68, "comment": "吃一半聊一半"},
+        {"name": "话题深度", "percentage": 76, "comment": "吃一半聊一半"},
         {"name": "含梗量", "percentage": 88, "comment": "表情包含量超标"},
     ],
 }
@@ -128,8 +128,8 @@ main_ctx = {
     "total_characters": 8765,
     "emoji_count": 131,
     "most_active_period": "21:00 - 23:00",
-    "current_date": "2026年08月01日",
-    "current_datetime": "2026-08-01 23:59:12",
+    "current_date": "2026年09月05日",
+    "current_datetime": "2026-09-05 23:59:12",
     "total_tokens": 15234,
     "prompt_tokens": 8033,
     "completion_tokens": 7201,
@@ -175,7 +175,7 @@ with tempfile.TemporaryDirectory(prefix="tpl_preview_") as tmp:
     if not png_path.exists():
         raise SystemExit("截图失败：输出文件不存在。")
 
-    # ---------- 3) 白边裁剪 + 转 JPEG ----------
+    # ---------- 3) 底部背景裁剪 + 转 JPEG ----------
     try:
         from PIL import Image
     except ImportError:
@@ -187,26 +187,29 @@ with tempfile.TemporaryDirectory(prefix="tpl_preview_") as tmp:
     img = Image.open(png_path).convert("RGB")
     w, h = img.size
     pixels = img.load()
-    # 从底部向上跳过纯白/近白行
+    bg_r, bg_g, bg_b = pixels[w // 2, h - 1]
+    
+    # 从底部向上查找内容边界
     bottom = h
     for y in range(h - 1, 0, -1):
-        row_white = True
-        for x in range(0, w, 8):  # 采样步长 8 加速
+        row_match = True
+        for x in range(20, w - 20, 8):
             r, g, b = pixels[x, y]
-            if not (r > 248 and g > 248 and b > 248):
-                row_white = False
+            if abs(r - bg_r) > 12 or abs(g - bg_g) > 12 or abs(b - bg_b) > 12:
+                row_match = False
                 break
-        if not row_white:
-            bottom = y + 1
+        if not row_match:
+            bottom = min(h, y + 48)
             break
-    cropped = img.crop((0, 0, w, min(bottom + 24, h)))
+
+    cropped = img.crop((0, 0, w, bottom))
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     cropped.save(OUT_JPG, "JPEG", quality=88)
     print(f"[ok] 预览图已生成: {OUT_JPG} ({cropped.size[0]}x{cropped.size[1]})")
 
     # README 使用的缩略图（宽 420，保持比例）
     thumb = cropped.copy()
-    thumb.thumbnail((420, 1200))
+    thumb.thumbnail((420, 1500))
     thumb.save(OUT_THUMB, "JPEG", quality=85)
     print(f"[ok] 缩略图已生成: {OUT_THUMB} ({thumb.size[0]}x{thumb.size[1]})")
 

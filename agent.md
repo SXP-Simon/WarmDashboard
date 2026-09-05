@@ -1,4 +1,4 @@
-# AGENTS.md — AstrBot 报告视觉模板开发守则（暖色仪表盘 Warm Dashboard）
+# agent.md — AstrBot 报告视觉模板开发守则（暖色仪表盘 Warm Dashboard）
 
 本仓库是 AstrBot「群聊日常分析」插件的**报告视觉模板**仓库。
 本模板基于 **Warm Dashboard（暖色仪表盘）** 视觉系统构建。
