@@ -1,8 +1,4 @@
 {% if topics %}
-<div class="card-header">
-    <div class="header-badge bg-teal-dot"></div>
-    <h2 class="card-title">今日话题</h2>
-</div>
 <div class="topic-group">
     {% for topic in topics %}
     <div class="topic-row avoid-break">
@@ -10,9 +6,15 @@
             <span>{{ "%02d" | format(topic.index) }}</span>
         </div>
         <div class="topic-main">
-            <div class="topic-heading">{{ topic.topic.topic }}</div>
+            <div class="topic-title-wrap">
+                <div class="topic-heading">{{ topic.topic.topic }}</div>
+            </div>
             <div class="topic-meta">
-                <span class="meta-label">参与群友</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                </svg>
+                <span class="meta-label">讨论成员</span>
                 <span class="meta-names">{{ topic.contributors }}</span>
             </div>
             <div class="topic-summary">{{ topic.detail | safe }}</div>

@@ -1,21 +1,20 @@
 {% if quotes %}
-<div class="card-header">
-    <div class="header-badge bg-coral-dot"></div>
-    <h2 class="card-title">今日金句</h2>
-</div>
 <div class="quote-group">
     {% for quote in quotes %}
     <div class="quote-row avoid-break">
+        <div class="quote-watermark">“</div>
         <div class="avatar-circle">
             {% if quote.avatar_url %}
             <img src="{{ quote.avatar_url }}" alt="{{ quote.sender }}">
             {% endif %}
         </div>
         <div class="quote-body">
-            <div class="quote-author">{{ quote.sender }}</div>
+            <div class="quote-author">
+                <span>{{ quote.sender }}</span>
+            </div>
             <div class="quote-text">“{{ quote.content }}”</div>
             <div class="quote-comment">
-                <span class="comment-tag">AI 锐评</span>
+                <span class="comment-tag">✦ AI 锐评</span>
                 <span class="comment-content">{{ quote.reason | safe }}</span>
             </div>
         </div>

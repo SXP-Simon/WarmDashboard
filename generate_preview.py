@@ -21,12 +21,25 @@ OUT_JPG = OUT_DIR / "gda_warm_dashboard-demo.jpg"
 OUT_THUMB = OUT_DIR / "gda_warm_dashboard-demo-thumb.jpg"
 OUT_PNG = OUT_DIR / "gda_warm_dashboard-demo.png"
 
-# ---------- 1) 构造示例数据并渲染 ----------
-def svg_avatar(color: str) -> str:
+# ---------- 1) 构造更精美、富有个性与温度的示例头像 ----------
+def rich_svg_avatar(bg_color: str, skin_color: str, hair_color: str, hair_type: int = 1) -> str:
+    """生成带有暖色温润插画风格的 SVG 头像"""
+    hair_path = (
+        f'<path d="M26 38 Q48 14 70 38 Q78 52 74 62 Q68 44 48 42 Q28 44 22 62 Q18 52 26 38 Z" fill="{hair_color}"/>'
+        if hair_type == 1
+        else f'<path d="M22 36 Q48 12 74 36 Q78 68 68 76 Q60 48 48 44 Q36 48 28 76 Q18 68 22 36 Z" fill="{hair_color}"/>'
+    )
     svg = (
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96">'
-        f'<circle cx="48" cy="34" r="16" fill="{color}"/>'
-        f'<path d="M16 88c0-18 14-28 32-28s32 10 32 28z" fill="{color}"/>'
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">'
+        f'<rect width="96" height="96" rx="48" fill="{bg_color}"/>'
+        f'<circle cx="48" cy="46" r="21" fill="{skin_color}"/>'
+        f'<path d="M22 88 C24 66 35 60 48 60 C61 60 72 66 74 88 Z" fill="{hair_color}" opacity="0.9"/>'
+        f'{hair_path}'
+        f'<circle cx="41" cy="46" r="2.5" fill="#2d3748"/>'
+        f'<circle cx="55" cy="46" r="2.5" fill="#2d3748"/>'
+        f'<path d="M44 54 Q48 57 52 54" stroke="#c17767" stroke-width="2" fill="none" stroke-linecap="round"/>'
+        f'<circle cx="36" cy="50" r="3" fill="#fca5a5" opacity="0.5"/>'
+        f'<circle cx="60" cy="50" r="3" fill="#fca5a5" opacity="0.5"/>'
         f'</svg>'
     )
     return "data:image/svg+xml;base64," + base64.b64encode(svg.encode()).decode()
@@ -46,19 +59,30 @@ common = {
     "t2i_gstatic_mirror": "https://fonts.gstatic.com",
     "t2i_atri_font_mirror": "",
 }
+
+avatar_ming = rich_svg_avatar("#d1ecea", "#fed7aa", "#4a9d9a", 1)
+avatar_hong = rich_svg_avatar("#fef08a", "#fed7aa", "#b57a1e", 2)
+avatar_wei = rich_svg_avatar("#fed7aa", "#ffedd5", "#c17767", 1)
+
 sub_ctx = {
     "topics": [
         {
             "index": 1,
-            "topic": {"topic": "今晚吃什么？群里聊了 40 分钟"},
+            "topic": {"topic": "今晚吃什么？群里热聊 40 分钟美食规划"},
             "contributors": "小明、小红、阿伟",
-            "detail": "最终决定去吃火锅，<b>人均 80</b>，周五晚八点老地方集合～",
+            "detail": "最终决定去吃铜锅涮肉，<b>人均 85</b>，周五晚八点老地方集合～阿伟负责订包间，小红带自制杨梅气泡饮！",
         },
         {
             "index": 2,
-            "topic": {"topic": "新版本功能与设计讨论"},
-            "contributors": "阿伟、小美",
-            "detail": "建议把聊天记录导出做成暖色仪表盘可视化，已被采纳并推进！",
+            "topic": {"topic": "新版本功能与暖色仪表盘设计提案"},
+            "contributors": "阿伟、小美、小明",
+            "detail": "建议把群聊日常报告全面重构为 <b>Warm Dashboard</b> 风格：赤陶暖色大底 + 奶油白卡片 + 漫射柔和阴影，方案已获全票通过！",
+        },
+        {
+            "index": 3,
+            "topic": {"topic": "周末摄影约拍与器材交流"},
+            "contributors": "小红、阿伟",
+            "detail": "讨论了秋季银杏大道的拍摄路线与光线布局，提醒大家注意周末气温变化与防风保暖。",
         },
     ],
     "titles": [
@@ -66,49 +90,49 @@ sub_ctx = {
             "name": "小明",
             "title": "话题发动机",
             "mbti": "ENFP",
-            "reason": "几乎每个话题都由 TA 开启，是群里的气氛担当。",
-            "avatar_data": svg_avatar("#4a9d9a"),
-            "profile_display": "ENFP",
+            "reason": "几乎每个热门话题都由 TA 率先开启，是群里不可或缺的气氛担当与活力源泉。",
+            "avatar_data": avatar_ming,
+            "profile_display": "ENFP 竞选者",
         },
         {
             "name": "小红",
             "title": "深夜守望者",
             "mbti": "ISTP",
-            "reason": "凌晨 1 点的群里，总能看到 TA 的回复。",
-            "avatar_data": svg_avatar("#e8b86d"),
-            "profile_display": "ISTP",
+            "reason": "凌晨 1 点的群聊里总能看到 TA 治愈系的金句回复，默默守望着大家的碎碎念。",
+            "avatar_data": avatar_hong,
+            "profile_display": "ISTP 鉴赏家",
         },
         {
             "name": "阿伟",
-            "title": "冷场救星",
+            "title": "冷场急救星",
             "mbti": "INFJ",
-            "reason": "擅长在话题冷却时丢出新的讨论点。",
-            "avatar_data": svg_avatar("#c17767"),
-            "profile_display": "INFJ",
+            "reason": "擅长在群聊冷却时抛出让人会心一笑的新奇讨论点，瞬间拉满全员互动热情。",
+            "avatar_data": avatar_wei,
+            "profile_display": "INFJ 提倡者",
         },
     ],
     "quotes": [
         {
-            "content": "今天真开心，感觉自己又变聪明了一点！",
+            "content": "今天真开心，感觉自己又变聪明了一点点！",
             "sender": "小红",
-            "reason": "典型的“学点新东西就膨胀”式自我鼓励，已被群友习惯性点赞。",
-            "avatar_url": svg_avatar("#e8b86d"),
+            "reason": "典型的“学到新知识就疯狂膨胀”式自我鼓励，已成为全群今日的开心催化剂。",
+            "avatar_url": avatar_hong,
         },
         {
-            "content": "猫又踩我键盘了！！",
+            "content": "猫又踩我键盘发了一串乱码，但仔细一瞧居然有理有据。",
             "sender": "阿伟",
-            "reason": "猫：这键盘手感不错，以后归我了。",
-            "avatar_url": svg_avatar("#c17767"),
+            "reason": "猫猫特工队代班发言，群友纷纷表示赞同并强烈要求给猫猫颁发管理员职位。",
+            "avatar_url": avatar_wei,
         },
     ],
-    "chart_data": [{"hour": i, "count": i * 3 % 20 + 2, "percentage": min(100, (i * 3 % 20 + 2) * 5)} for i in range(24)],
+    "chart_data": [{"hour": i, "count": (i * 7 + 3) % 24 + 4, "percentage": min(100, int(((i * 7 + 3) % 24 + 4) * 3.8))} for i in range(24)],
     "title": "今日群聊质量锐评",
-    "subtitle": "总体氛围极佳",
-    "summary": "全群保持高热度互动，温暖亲和、白天封神，只差亿点点正经。",
+    "subtitle": "氛围融洽度 A+",
+    "summary": "全群保持高热度良性互动，赤陶暖阳般亲和温暖。话题发散自然，有深度交流亦有生动斗图，群聊活力指数拉满！",
     "dimensions": [
-        {"name": "活跃度", "percentage": 92, "comment": "全天无冷场"},
-        {"name": "话题深度", "percentage": 76, "comment": "吃一半聊一半"},
-        {"name": "含梗量", "percentage": 88, "comment": "表情包含量超标"},
+        {"name": "活跃热度", "percentage": 94, "comment": "全天无冷场，高频交流自然"},
+        {"name": "话题深度", "percentage": 82, "comment": "技术讨论与生活闲聊并存"},
+        {"name": "含梗趣味", "percentage": 88, "comment": "金句频现，表情包恰到好处"},
     ],
 }
 topics_html = env.get_template("topic_item.html").render(**common, **sub_ctx)
@@ -123,96 +147,120 @@ main_ctx = {
     "quotes_html": quotes_html,
     "hourly_chart_html": hourly_chart_html,
     "chat_quality_html": chat_quality_html,
-    "message_count": 233,
+    "message_count": 1428,
     "participant_count": 42,
-    "total_characters": 8765,
-    "emoji_count": 131,
-    "most_active_period": "21:00 - 23:00",
+    "total_characters": 36890,
+    "emoji_count": 316,
+    "most_active_period": "20:00 - 22:00",
     "current_date": "2026年09月05日",
-    "current_datetime": "2026-09-05 23:59:12",
-    "total_tokens": 15234,
-    "prompt_tokens": 8033,
-    "completion_tokens": 7201,
+    "current_datetime": "2026-09-05 22:30:15",
+    "total_tokens": 5820,
+    "prompt_tokens": 4210,
+    "completion_tokens": 1610,
 }
-preview_html = env.get_template("image_template.html").render(**main_ctx)
+rendered_html = env.get_template("image_template.html").render(**main_ctx)
 
-with tempfile.TemporaryDirectory(prefix="tpl_preview_") as tmp:
-    tmp_dir = Path(tmp)
-    html_path = tmp_dir / "preview.html"
-    png_path = tmp_dir / "preview.png"
-    html_path.write_text(preview_html, encoding="utf-8")
-
-    # ---------- 2) 无头浏览器截图 ----------
-    browser = shutil.which("msedge") or shutil.which(
-        "chrome"
-    ) or shutil.which("chromium") or None
-    candidates = [
-        browser,
+# ---------- 2) 寻找可用浏览器 ----------
+def find_browser() -> str | None:
+    for name in ("chrome", "google-chrome", "chromium", "msedge"):
+        p = shutil.which(name)
+        if p:
+            return p
+    for path in (
+        r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+        r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
         r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
         r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
-        r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+    ):
+        if Path(path).exists():
+            return path
+    return None
+
+
+browser = find_browser()
+if not browser:
+    print("[skip] 未找到可用浏览器（Chrome / Edge），请手动在浏览器中查看渲染效果。")
+    exit(0)
+
+# ---------- 3) 无头截图 ----------
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+with tempfile.TemporaryDirectory() as td:
+    html_path = Path(td) / "render.html"
+    png_tmp = Path(td) / "shot.png"
+    html_path.write_text(rendered_html, encoding="utf-8")
+
+    cmd = [
+        browser,
+        "--headless=new",
+        "--disable-gpu",
+        "--hide-scrollbars",
+        "--no-sandbox",
+        "--disable-extensions",
+        "--disable-sync",
+        "--disable-background-networking",
+        "--disable-default-apps",
+        "--metrics-recording-only",
+        "--virtual-time-budget=2000",
+        "--force-device-scale-factor=1",
+        "--window-size=750,8000",
+        f"--screenshot={png_tmp}",
+        str(html_path),
     ]
-    browser = next((c for c in candidates if c and Path(c).exists()), None)
-    if not browser:
-        raise SystemExit("未找到 Chrome/Edge 浏览器，无法生成预览图。")
+    res = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    if res.returncode != 0:
+        print("[error] 浏览器截图失败:", res.stderr)
+        exit(1)
 
-    subprocess.run(
-        [
-            browser,
-            "--headless=new",
-            "--disable-gpu",
-            "--hide-scrollbars",
-            "--force-device-scale-factor=1",
-            "--window-size=750,3400",
-            f"--user-data-dir={tmp_dir / 'profile'}",
-            f"--screenshot={png_path}",
-            html_path.as_uri(),
-        ],
-        check=True,
-        capture_output=True,
-        timeout=120,
-    )
-    if not png_path.exists():
-        raise SystemExit("截图失败：输出文件不存在。")
+    if not png_tmp.exists() or png_tmp.stat().st_size == 0:
+        print("[error] 截图文件未生成")
+        exit(1)
 
-    # ---------- 3) 底部背景裁剪 + 转 JPEG ----------
+    # ---------- 4) 智能裁剪与转换 ----------
     try:
         from PIL import Image
-    except ImportError:
-        OUT_DIR.mkdir(parents=True, exist_ok=True)
-        png_path.replace(OUT_PNG)
-        print(f"[ok] 预览图已生成（PNG）: {OUT_PNG}")
-        raise SystemExit(0)
 
-    img = Image.open(png_path).convert("RGB")
-    w, h = img.size
-    pixels = img.load()
-    bg_r, bg_g, bg_b = pixels[w // 2, h - 1]
-    
-    # 从底部向上查找内容边界
-    bottom = h
-    for y in range(h - 1, 0, -1):
-        row_match = True
-        for x in range(20, w - 20, 8):
-            r, g, b = pixels[x, y]
-            if abs(r - bg_r) > 12 or abs(g - bg_g) > 12 or abs(b - bg_b) > 12:
-                row_match = False
+        img = Image.open(png_tmp)
+        w, h = img.size
+
+        # 智能检测底部内容边界：
+        # 背景（包括点阵与渐变）：RGB大致在 r: 180~235, g: 130~190, b: 100~170，且不会有高对比度的白字或深灰字
+        # 内容区域（卡片/页脚）：存在真正的白字 (r>250, g>250, b>250 且不透明) 或 奶油白卡片 (#faf8f5) 或 深色字 (r<80)
+        def is_content_row(image, y, width, step=8):
+            for x in range(20, width - 20, step):
+                pixel = image.getpixel((x, y))
+                if len(pixel) >= 3:
+                    r, g, b = pixel[:3]
+                    # 卡片主体奶油白或者深灰文字
+                    if (r > 245 and g > 240 and b > 235) or (r < 90 and g < 90 and b < 90):
+                        return True
+                    # 页脚的高亮纯白文字
+                    if r >= 254 and g >= 254 and b >= 254:
+                        return True
+            return False
+
+        content_bottom = h
+        for y in range(h - 1, 0, -4):
+            if is_content_row(img, y, w):
+                content_bottom = min(h, y + 60)
                 break
-        if not row_match:
-            bottom = min(h, y + 48)
-            break
 
-    cropped = img.crop((0, 0, w, bottom))
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    cropped.save(OUT_JPG, "JPEG", quality=88)
-    print(f"[ok] 预览图已生成: {OUT_JPG} ({cropped.size[0]}x{cropped.size[1]})")
+        if content_bottom < h and content_bottom > 500:
+            img = img.crop((0, 0, w, content_bottom))
 
-    # README 使用的缩略图（宽 420，保持比例）
-    thumb = cropped.copy()
-    thumb.thumbnail((420, 1500))
-    thumb.save(OUT_THUMB, "JPEG", quality=85)
-    print(f"[ok] 缩略图已生成: {OUT_THUMB} ({thumb.size[0]}x{thumb.size[1]})")
+        img_rgb = img.convert("RGB")
+        img_rgb.save(OUT_JPG, "JPEG", quality=90)
+        print(f"[ok] 预览图: {OUT_JPG} ({img_rgb.size[0]}x{img_rgb.size[1]})")
 
-    # 复制一份到模板目录（随 zip 打包安装后，QQ /查看模板 即可显示该预览图）
-    cropped.save(TPL / "preview.jpg", "JPEG", quality=88)
-    print(f"[ok] 已同步模板目录预览图: {TPL / 'preview.jpg'}")
+        # 生成缩略图
+        thumb = img_rgb.copy()
+        thumb.thumbnail((384, 1500), Image.Resampling.LANCZOS)
+        thumb.save(OUT_THUMB, "JPEG", quality=85)
+        print(f"[ok] 缩略图: {OUT_THUMB} ({thumb.size[0]}x{thumb.size[1]})")
+
+        # 同步更新模板内置 preview.jpg
+        shutil.copy2(OUT_JPG, TPL / "preview.jpg")
+        print(f"[ok] 同步模板目录预览图: {TPL / 'preview.jpg'}")
+
+    except ImportError:
+        shutil.copy2(png_tmp, OUT_PNG)
+        print(f"[ok] 未安装 Pillow，已输出原始 PNG: {OUT_PNG}")

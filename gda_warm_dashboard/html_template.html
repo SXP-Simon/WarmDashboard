@@ -13,25 +13,40 @@
 
     <style>
         :root {
-            /* Warm Dashboard Tokens */
+            /* Warm Dashboard Color Tokens */
             --bg-terracotta: #d4a088;
             --bg-terracotta-dark: #c9967a;
+            --bg-terracotta-light: #dfb09b;
             --card-cream: #faf8f5;
             --card-white: #ffffff;
+            
+            /* Accent Colors */
             --accent-teal: #4a9d9a;
+            --accent-teal-soft: rgba(74, 157, 154, 0.14);
             --accent-gold: #e8b86d;
+            --accent-gold-soft: rgba(232, 184, 109, 0.18);
             --accent-coral: #c17767;
+            --accent-coral-soft: rgba(193, 119, 103, 0.15);
             --accent-sage: #6b8e8e;
+            --accent-sage-soft: rgba(107, 142, 142, 0.15);
+
+            /* Typography */
             --text-main: #1f2937;       /* text-gray-800 */
             --text-muted: #4b5563;      /* text-gray-600 */
             --text-light: #6b7280;      /* text-gray-500 */
-            --border-subtle: rgba(229, 231, 235, 0.7);
+            --text-soft: #9ca3af;       /* text-gray-400 */
+
+            /* Borders & Shadows */
+            --border-subtle: rgba(229, 231, 235, 0.85);
             --border-divider: rgba(0, 0, 0, 0.06);
-            --shadow-warm: 0 16px 36px -6px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
+            --shadow-warm: 0 18px 38px -6px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
             --shadow-hover: 0 24px 44px -8px rgba(0, 0, 0, 0.12), 0 8px 18px rgba(0, 0, 0, 0.04);
+            
+            /* Radii */
             --radius-main: 28px;
-            --radius-kpi: 20px;
+            --radius-kpi: 22px;
             --radius-pill: 9999px;
+
             --transition-smooth: all 200ms ease-out;
             --font-family: 'Outfit', {% if t2i_font_source == 'Mainland' %}'Noto Sans SC', 'Noto Sans TC'{% else %}'Noto Sans TC', 'Noto Sans SC'{% endif %}, system-ui, sans-serif;
         }
@@ -47,8 +62,10 @@
             color: var(--text-main);
             background-color: var(--bg-terracotta);
             background-image: 
-                radial-gradient(circle at 14% 10%, rgba(255, 255, 255, 0.22) 0%, transparent 45%),
-                radial-gradient(circle at 86% 90%, rgba(201, 150, 122, 0.45) 0%, transparent 45%);
+                radial-gradient(circle at 14% 10%, rgba(255, 255, 255, 0.28) 0%, transparent 48%),
+                radial-gradient(circle at 86% 90%, rgba(201, 150, 122, 0.5) 0%, transparent 45%),
+                radial-gradient(circle, rgba(255, 255, 255, 0.13) 1.5px, transparent 1.5px);
+            background-size: 100% 100%, 100% 100%, 26px 26px;
             min-height: 100vh;
         }
 
@@ -61,10 +78,11 @@
         /* ============ Header Area ============ */
         .dashboard-header {
             text-align: center;
-            padding: 8px 0 28px;
+            padding: 10px 0 28px;
+            position: relative;
         }
 
-        .header-pill {
+        .header-top-tag {
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -72,27 +90,38 @@
             border-radius: var(--radius-pill);
             padding: 6px 18px;
             margin-bottom: 14px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
             transition: var(--transition-smooth);
         }
 
-        .header-pill:hover {
+        .header-top-tag:hover {
             transform: translateY(-0.5px);
             box-shadow: 0 8px 20px rgba(74, 157, 154, 0.25);
         }
 
-        .pill-dot {
+        .tag-pulse {
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: var(--accent-teal);
+            box-shadow: 0 0 0 3px rgba(74, 157, 154, 0.25);
         }
 
-        .pill-text {
-            font-size: 13px;
-            font-weight: 600;
+        .tag-text {
+            font-size: 12px;
+            font-weight: 700;
             color: var(--accent-teal);
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
+        }
+
+        .tag-badge {
+            background: var(--accent-gold-soft);
+            color: #b57a1e;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 1px 6px;
+            margin-left: 2px;
         }
 
         .header-title {
@@ -101,15 +130,38 @@
             color: #ffffff;
             letter-spacing: 0.5px;
             margin-bottom: 8px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
         }
 
-        .header-meta {
-            font-size: 15px;
-            font-weight: 500;
+        .header-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
             color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
             opacity: 0.96;
-            letter-spacing: 0.2px;
+        }
+
+        .meta-capsule {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: var(--radius-pill);
+            padding: 4px 14px;
+            transition: var(--transition-smooth);
+        }
+
+        .meta-capsule:hover {
+            background: rgba(255, 255, 255, 0.24);
+        }
+
+        .meta-capsule svg {
+            width: 14px;
+            height: 14px;
         }
 
         /* ============ KPI Row ============ */
@@ -124,50 +176,74 @@
             background: var(--card-cream);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-kpi);
-            padding: 22px 14px 20px;
+            padding: 20px 14px 18px;
             text-align: center;
             box-shadow: var(--shadow-warm);
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            overflow: hidden;
             transition: var(--transition-smooth);
             cursor: default;
         }
 
         .kpi-card:hover {
-            transform: translateY(-1px);
+            transform: translateY(-0.5px);
             box-shadow: var(--shadow-hover);
         }
 
+        /* Decorative Watermark on KPI cards */
+        .kpi-watermark {
+            position: absolute;
+            right: -10px;
+            bottom: -10px;
+            width: 64px;
+            height: 64px;
+            opacity: 0.045;
+            pointer-events: none;
+            color: var(--text-main);
+            transition: var(--transition-smooth);
+        }
+
+        .kpi-card:hover .kpi-watermark {
+            opacity: 0.08;
+            transform: scale(1.08);
+        }
+
         .kpi-circle-icon {
-            width: 48px;
-            height: 48px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             transition: var(--transition-smooth);
         }
 
         .bg-teal-light {
-            background: rgba(74, 157, 154, 0.15);
+            background: var(--accent-teal-soft);
             color: var(--accent-teal);
+            box-shadow: 0 0 0 3px rgba(74, 157, 154, 0.12);
         }
 
         .bg-gold-light {
-            background: rgba(232, 184, 109, 0.2);
+            background: var(--accent-gold-soft);
             color: #d69838;
+            box-shadow: 0 0 0 3px rgba(232, 184, 109, 0.15);
         }
 
         .bg-coral-light {
-            background: rgba(193, 119, 103, 0.18);
+            background: var(--accent-coral-soft);
             color: var(--accent-coral);
+            box-shadow: 0 0 0 3px rgba(193, 119, 103, 0.12);
         }
 
         .bg-sage-light {
-            background: rgba(107, 142, 142, 0.18);
+            background: var(--accent-sage-soft);
             color: var(--accent-sage);
+            box-shadow: 0 0 0 3px rgba(107, 142, 142, 0.12);
         }
 
         .kpi-card:hover .kpi-circle-icon {
@@ -175,13 +251,13 @@
         }
 
         .kpi-circle-icon svg {
-            width: 24px;
-            height: 24px;
+            width: 23px;
+            height: 23px;
             stroke-width: 2.2;
         }
 
         .kpi-number {
-            font-size: 30px;
+            font-size: 29px;
             font-weight: 800;
             color: var(--text-main);
             line-height: 1.15;
@@ -191,7 +267,7 @@
 
         .kpi-card:hover .kpi-number {
             color: var(--accent-teal);
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
 
         .kpi-card:nth-child(2):hover .kpi-number {
@@ -204,9 +280,38 @@
 
         .kpi-title {
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-muted);
-            margin-top: 6px;
+            margin-top: 4px;
+        }
+
+        .kpi-pill {
+            margin-top: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: var(--radius-pill);
+            padding: 2px 8px;
+            line-height: 1.2;
+        }
+
+        .pill-teal {
+            background: rgba(74, 157, 154, 0.12);
+            color: var(--accent-teal);
+        }
+
+        .pill-gold {
+            background: rgba(232, 184, 109, 0.2);
+            color: #b57a1e;
+        }
+
+        .pill-coral {
+            background: rgba(193, 119, 103, 0.12);
+            color: var(--accent-coral);
+        }
+
+        .pill-sage {
+            background: rgba(107, 142, 142, 0.15);
+            color: var(--accent-sage);
         }
 
         /* ============ Primary Dashboard Cards ============ */
@@ -218,6 +323,7 @@
             margin-top: 24px;
             box-shadow: var(--shadow-warm);
             transition: var(--transition-smooth);
+            position: relative;
         }
 
         .dashboard-card:hover {
@@ -227,30 +333,50 @@
         .card-header {
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
             margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-divider);
         }
 
-        .header-badge {
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-decor-dots {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .decor-dot-primary {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            flex-shrink: 0;
+        }
+
+        .decor-dot-subtle {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.12);
         }
 
         .bg-teal-dot {
             background: var(--accent-teal);
-            box-shadow: 0 0 0 4px rgba(74, 157, 154, 0.2);
+            box-shadow: 0 0 0 3px rgba(74, 157, 154, 0.2);
         }
 
         .bg-gold-dot {
             background: var(--accent-gold);
-            box-shadow: 0 0 0 4px rgba(232, 184, 109, 0.25);
+            box-shadow: 0 0 0 3px rgba(232, 184, 109, 0.25);
         }
 
         .bg-coral-dot {
             background: var(--accent-coral);
-            box-shadow: 0 0 0 4px rgba(193, 119, 103, 0.2);
+            box-shadow: 0 0 0 3px rgba(193, 119, 103, 0.2);
         }
 
         .card-title {
@@ -260,11 +386,21 @@
             letter-spacing: -0.2px;
         }
 
+        .header-badge-tag {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill);
+            padding: 3px 10px;
+        }
+
         /* ============ Peak Banner ============ */
         .peak-banner {
             display: flex;
             align-items: center;
-            gap: 14px;
+            justify-content: space-between;
             padding: 14px 18px;
             background: #ffffff;
             border: 1px solid var(--border-subtle);
@@ -278,11 +414,18 @@
             box-shadow: 0 8px 20px rgba(232, 184, 109, 0.2);
         }
 
+        .peak-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .peak-circle {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(232, 184, 109, 0.22);
+            background: var(--accent-gold-soft);
+            box-shadow: 0 0 0 3px rgba(232, 184, 109, 0.18);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -308,10 +451,38 @@
             margin-left: 4px;
         }
 
+        .peak-highlight-tag {
+            background: rgba(232, 184, 109, 0.18);
+            color: #b57a1e;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: var(--radius-pill);
+            padding: 3px 10px;
+        }
+
         /* ============ Activity Chart ============ */
         .chart-container {
             width: 100%;
             padding-top: 10px;
+            position: relative;
+        }
+
+        .chart-grid-lines {
+            position: absolute;
+            top: 24px;
+            left: 0;
+            right: 0;
+            height: 166px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .chart-grid-line {
+            width: 100%;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
         }
 
         .chart-bars {
@@ -321,6 +492,8 @@
             height: 190px;
             padding: 24px 2px 2px;
             border-bottom: 1px solid var(--border-divider);
+            position: relative;
+            z-index: 1;
         }
 
         .chart-col {
@@ -351,7 +524,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            background: rgba(0, 0, 0, 0.03);
+            background: rgba(0, 0, 0, 0.025);
             border-radius: 4px 4px 0 0;
             cursor: pointer;
         }
@@ -394,7 +567,7 @@
         }
 
         .topic-row:first-child {
-            padding-top: 0;
+            padding-top: 4px;
         }
 
         .topic-row:last-child {
@@ -414,10 +587,11 @@
         }
 
         .teal-circle {
-            background: rgba(74, 157, 154, 0.15);
+            background: var(--accent-teal-soft);
             color: var(--accent-teal);
             font-size: 14px;
             font-weight: 700;
+            box-shadow: 0 0 0 3px rgba(74, 157, 154, 0.1);
         }
 
         .topic-main {
@@ -425,12 +599,18 @@
             min-width: 0;
         }
 
+        .topic-title-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
         .topic-heading {
             font-size: 17px;
             font-weight: 700;
             color: var(--text-main);
             line-height: 1.4;
-            margin-bottom: 6px;
         }
 
         .topic-meta {
@@ -488,13 +668,13 @@
             flex-shrink: 0;
             background: #ffffff;
             border: 2px solid #ffffff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 0 0 2px rgba(232, 184, 109, 0.25), 0 4px 12px rgba(0, 0, 0, 0.06);
             transition: var(--transition-smooth);
         }
 
         .profile-item:hover .avatar-circle {
             transform: scale(1.05);
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 0 0 3px var(--accent-teal), 0 8px 18px rgba(0, 0, 0, 0.08);
         }
 
         .avatar-circle img {
@@ -528,17 +708,19 @@
             font-weight: 600;
             border-radius: var(--radius-pill);
             padding: 2px 8px;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
             transition: var(--transition-smooth);
         }
 
         .teal-pill {
-            background: rgba(74, 157, 154, 0.15);
+            background: var(--accent-teal-soft);
             color: var(--accent-teal);
         }
 
         .coral-pill {
-            background: rgba(193, 119, 103, 0.16);
+            background: var(--accent-coral-soft);
             color: var(--accent-coral);
         }
 
@@ -561,6 +743,7 @@
             align-items: flex-start;
             padding-bottom: 20px;
             border-bottom: 1px solid var(--border-divider);
+            position: relative;
             transition: var(--transition-smooth);
         }
 
@@ -569,9 +752,24 @@
             border-bottom: none;
         }
 
+        .quote-watermark {
+            position: absolute;
+            right: 0;
+            top: -8px;
+            font-size: 52px;
+            font-family: Georgia, serif;
+            color: var(--accent-gold);
+            opacity: 0.16;
+            line-height: 1;
+            user-select: none;
+            pointer-events: none;
+        }
+
         .quote-body {
             flex: 1;
             min-width: 0;
+            position: relative;
+            z-index: 1;
         }
 
         .quote-author {
@@ -579,6 +777,9 @@
             font-weight: 700;
             color: var(--accent-teal);
             margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .quote-text {
@@ -611,6 +812,9 @@
             font-weight: 700;
             font-size: 12px;
             flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
         }
 
         .comment-content {
@@ -652,6 +856,16 @@
         .dim-label {
             font-weight: 600;
             color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dim-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-teal);
         }
 
         .dim-num {
@@ -685,6 +899,15 @@
             font-size: 14px;
             color: #ffffff;
             line-height: 1.8;
+            position: relative;
+        }
+
+        .footer-divider {
+            width: 80px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.25);
+            margin: 0 auto 16px;
+            border-radius: var(--radius-pill);
         }
 
         .footer-tokens {
@@ -731,17 +954,38 @@
     <div class="dashboard-container">
         <!-- 头部区域 -->
         <header class="dashboard-header">
-            <div class="header-pill">
-                <span class="pill-dot"></span>
-                <span class="pill-text">WARM DASHBOARD</span>
+            <div class="header-top-tag">
+                <span class="tag-pulse"></span>
+                <span class="tag-text">WARM DASHBOARD</span>
+                <span class="tag-badge">DAILY</span>
             </div>
             <h1 class="header-title">群聊日常分析</h1>
-            <p class="header-meta">{{ current_date }} · {{ current_datetime }}</p>
+            <div class="header-meta-row">
+                <div class="meta-capsule">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span>{{ current_date }}</span>
+                </div>
+                <div class="meta-capsule">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>{{ current_datetime }}</span>
+                </div>
+            </div>
         </header>
 
-        <!-- KPI 统计卡片网格 -->
+        <!-- KPI 统计卡片网格（带点缀色圆形背景、微水印底纹与指标胶囊） -->
         <section class="kpi-row">
             <div class="kpi-card">
+                <svg class="kpi-watermark" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
                 <div class="kpi-circle-icon bg-teal-light">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -749,9 +993,14 @@
                 </div>
                 <div class="kpi-number">{{ message_count }}</div>
                 <div class="kpi-title">消息总量</div>
+                <span class="kpi-pill pill-teal">热度攀升</span>
             </div>
 
             <div class="kpi-card">
+                <svg class="kpi-watermark" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                </svg>
                 <div class="kpi-circle-icon bg-gold-light">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -762,9 +1011,13 @@
                 </div>
                 <div class="kpi-number">{{ participant_count }}</div>
                 <div class="kpi-title">参与人数</div>
+                <span class="kpi-pill pill-gold">全员互动</span>
             </div>
 
             <div class="kpi-card">
+                <svg class="kpi-watermark" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                </svg>
                 <div class="kpi-circle-icon bg-coral-light">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <circle cx="12" cy="12" r="10"></circle>
@@ -775,65 +1028,128 @@
                 </div>
                 <div class="kpi-number">{{ emoji_count }}</div>
                 <div class="kpi-title">表情包</div>
+                <span class="kpi-pill pill-coral">生动活跃</span>
             </div>
 
             <div class="kpi-card">
+                <svg class="kpi-watermark" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                </svg>
                 <div class="kpi-circle-icon bg-sage-light">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>
                         <line x1="16" y1="13" x2="8" y2="13"></line>
                         <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
                     </svg>
                 </div>
                 <div class="kpi-number">{{ total_characters }}</div>
                 <div class="kpi-title">文字总量</div>
+                <span class="kpi-pill pill-sage">畅所欲言</span>
             </div>
         </section>
 
         <!-- 今日活跃轨迹卡片 -->
         <section class="dashboard-card">
             <div class="card-header">
-                <div class="header-badge bg-gold-dot"></div>
-                <h2 class="card-title">今日活跃轨迹</h2>
-            </div>
-            <div class="peak-banner">
-                <div class="peak-circle">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
+                <div class="header-left">
+                    <div class="header-decor-dots">
+                        <span class="decor-dot-primary bg-gold-dot"></span>
+                        <span class="decor-dot-subtle"></span>
+                    </div>
+                    <h2 class="card-title">今日活跃轨迹</h2>
                 </div>
-                <div class="peak-info">全天最活跃时段：<strong>{{ most_active_period }}</strong></div>
+                <span class="header-badge-tag">24小时动态分布</span>
             </div>
-            {{ hourly_chart_html | safe }}
+
+            <div class="peak-banner">
+                <div class="peak-left">
+                    <div class="peak-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="peak-info">全天最活跃时段：<strong>{{ most_active_period }}</strong></div>
+                </div>
+                <span class="peak-highlight-tag">PEAK HOUR</span>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-grid-lines">
+                    <div class="chart-grid-line"></div>
+                    <div class="chart-grid-line"></div>
+                    <div class="chart-grid-line"></div>
+                </div>
+                {{ hourly_chart_html | safe }}
+            </div>
         </section>
 
         <!-- 话题板块卡片 -->
         <section class="dashboard-card">
+            <div class="card-header">
+                <div class="header-left">
+                    <div class="header-decor-dots">
+                        <span class="decor-dot-primary bg-teal-dot"></span>
+                        <span class="decor-dot-subtle"></span>
+                    </div>
+                    <h2 class="card-title">今日话题焦点</h2>
+                </div>
+                <span class="header-badge-tag">智能聚类</span>
+            </div>
             {{ topics_html | safe }}
         </section>
 
         <!-- 群友画像板块卡片 -->
         <section class="dashboard-card">
+            <div class="card-header">
+                <div class="header-left">
+                    <div class="header-decor-dots">
+                        <span class="decor-dot-primary bg-gold-dot"></span>
+                        <span class="decor-dot-subtle"></span>
+                    </div>
+                    <h2 class="card-title">群友个性画像</h2>
+                </div>
+                <span class="header-badge-tag">AI 角色志</span>
+            </div>
             {{ titles_html | safe }}
         </section>
 
         <!-- 今日金句板块卡片 -->
         <section class="dashboard-card">
+            <div class="card-header">
+                <div class="header-left">
+                    <div class="header-decor-dots">
+                        <span class="decor-dot-primary bg-coral-dot"></span>
+                        <span class="decor-dot-subtle"></span>
+                    </div>
+                    <h2 class="card-title">今日高光金句</h2>
+                </div>
+                <span class="header-badge-tag">群聊回响</span>
+            </div>
             {{ quotes_html | safe }}
         </section>
 
         <!-- 群聊质量锐评（可选） -->
         {% if chat_quality_html %}
         <section class="dashboard-card">
+            <div class="card-header">
+                <div class="header-left">
+                    <div class="header-decor-dots">
+                        <span class="decor-dot-primary bg-teal-dot"></span>
+                        <span class="decor-dot-subtle"></span>
+                    </div>
+                    <h2 class="card-title">群聊质量锐评</h2>
+                </div>
+                <span class="header-badge-tag">维度分析</span>
+            </div>
             {{ chat_quality_html | safe }}
         </section>
         {% endif %}
 
         <!-- 页脚 -->
         <footer class="dashboard-footer">
+            <div class="footer-divider"></div>
             <p>本报告由 AstrBot 群聊日常分析插件生成</p>
             <p class="footer-tokens">分析耗时 Token：{{ total_tokens }}（Prompt {{ prompt_tokens }} / 生成 {{ completion_tokens }}）</p>
         </footer>

@@ -1,8 +1,4 @@
 {% if titles %}
-<div class="card-header">
-    <div class="header-badge bg-gold-dot"></div>
-    <h2 class="card-title">群友画像</h2>
-</div>
 <div class="profile-grid">
     {% for title in titles %}
     <div class="profile-item avoid-break">
@@ -14,7 +10,7 @@
         <div class="profile-details">
             <div class="profile-top">
                 <span class="profile-name">{{ title.name }}</span>
-                <span class="pill-badge teal-pill">{{ title.title }}</span>
+                <span class="pill-badge teal-pill">✦ {{ title.title }}</span>
                 {% if title.profile_display or title.mbti %}
                 <span class="pill-badge coral-pill">{{ title.profile_display or title.mbti }}</span>
                 {% endif %}
