@@ -1,0 +1,24 @@
+{% if chart_data %}
+<div class="jf-chart-wrap">
+    <div class="jf-chart-bars">
+        {% for item in chart_data %}
+        {% set bar_percentage = item.percentage | float %}
+        {% if bar_percentage < 0 %}
+        {% set bar_percentage = 0 %}
+        {% elif bar_percentage > 100 %}
+        {% set bar_percentage = 100 %}
+        {% endif %}
+
+        <div class="jf-chart-col">
+            {% if item.count > 0 %}
+            <span class="jf-chart-val">{{ item.count }}</span>
+            {% endif %}
+            <div class="jf-chart-track">
+                <div class="jf-chart-fill" style="height: {{ bar_percentage }}%;"></div>
+            </div>
+            <span class="jf-chart-hour">{{ "%02d" | format(item.hour) }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
