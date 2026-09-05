@@ -1,0 +1,32 @@
+{% if chart_data %}
+<div class="ca-chart-wrap group">
+    <!-- Washi tape at top right -->
+    <div class="ca-tape ca-tape-blue -top-3 right-6 -rotate-2 group-hover:rotate-3 transition-transform duration-200"></div>
+    <div class="ca-chart-title-row">
+        <span class="ca-stamp-badge bg-[#3498db] text-white">24H TIMELINE</span>
+        <span class="font-mono text-xs uppercase tracking-widest text-[#2d2d2d]/70">ACTIVITY MONITOR</span>
+    </div>
+    <div class="ca-chart-bars">
+        {% for item in chart_data %}
+        {% set bar_percentage = item.percentage | float %}
+        {% if bar_percentage < 0 %}
+        {% set bar_percentage = 0 %}
+        {% elif bar_percentage > 100 %}
+        {% set bar_percentage = 100 %}
+        {% endif %}
+
+        <div class="ca-chart-col">
+            {% if item.count > 0 %}
+            <span class="ca-chart-val font-mono">{{ item.count }}</span>
+            {% else %}
+            <span class="ca-chart-val font-mono opacity-0">0</span>
+            {% endif %}
+            <div class="ca-chart-track">
+                <div class="ca-chart-fill {% if bar_percentage > 70 %}bg-[#e74c3c]{% elif bar_percentage > 35 %}bg-[#f39c12]{% else %}bg-[#3498db]{% endif %}" style="height: {{ bar_percentage }}%;"></div>
+            </div>
+            <span class="ca-chart-hour font-mono">{{ "%02d" | format(item.hour) }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,35 @@
+{% if summary %}
+<div class="ca-quality-summary group avoid-break">
+    <div class="ca-tape ca-tape-red -top-3 left-6 -rotate-2 group-hover:rotate-4 group-hover:-translate-y-1 transition-transform duration-200"></div>
+    <div class="ca-summary-badge font-mono">EXECUTIVE SUMMARY // 深度复盘</div>
+    <p class="ca-summary-text font-sans">{{ summary }}</p>
+</div>
+{% endif %}
+
+{% if dimensions %}
+<div class="ca-dim-grid avoid-break">
+    {% set dim_colors = ['bg-[#e74c3c]', 'bg-[#3498db]', 'bg-[#f39c12]', 'bg-[#9b59b6]'] %}
+    {% for dim in dimensions %}
+    {% set safe_percentage = dim.percentage | float %}
+    {% if safe_percentage < 0 %}
+    {% set safe_percentage = 0 %}
+    {% elif safe_percentage > 100 %}
+    {% set safe_percentage = 100 %}
+    {% endif %}
+    <div class="ca-dim-card">
+        <div class="ca-dim-head">
+            <span class="ca-dim-name font-serif">{{ dim.name }}</span>
+            <span class="ca-dim-ratio font-mono">{{ safe_percentage | int }}%</span>
+        </div>
+        <div class="ca-dim-track">
+            <div class="ca-dim-fill {{ dim_colors[loop.index0 % 4] }}" style="width: {{ safe_percentage }}%;"></div>
+        </div>
+        {% if dim.comment %}
+        <div class="ca-dim-comment font-mono">
+            <span class="ca-comment-arrow">&gt;</span> {{ dim.comment }}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

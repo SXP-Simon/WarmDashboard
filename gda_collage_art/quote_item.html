@@ -1,0 +1,36 @@
+{% if quotes %}
+<div class="ca-quote-list">
+    {% set rot_classes = ['rotate-[0.9deg]', '-rotate-[1.3deg]', 'rotate-[1.1deg]', '-rotate-[0.7deg]'] %}
+    {% set tape_colors = ['ca-tape-purple', 'ca-tape-yellow', 'ca-tape-red', 'ca-tape-blue'] %}
+    {% for quote in quotes %}
+    <div class="ca-quote-card group {{ rot_classes[loop.index0 % 4] }} avoid-break">
+        <!-- Washi tape -->
+        <div class="ca-tape {{ tape_colors[loop.index0 % 4] }} -top-3 left-10 -rotate-2 group-hover:rotate-4 group-hover:-translate-y-1 transition-transform duration-200"></div>
+        <div class="ca-quote-header">
+            <div class="ca-quote-avatar-frame">
+                {% if quote.avatar_url %}
+                <img src="{{ quote.avatar_url }}" alt="{{ quote.sender }}" class="ca-quote-avatar-img">
+                {% else %}
+                <div class="ca-avatar-placeholder font-mono">Q</div>
+                {% endif %}
+            </div>
+            <div class="ca-quote-meta">
+                <span class="ca-quote-sender font-serif">{{ quote.sender }}</span>
+                <span class="ca-quote-stamp font-mono">SELECTED QUOTE</span>
+            </div>
+        </div>
+        <div class="ca-quote-statement font-serif">
+            <span class="ca-quote-mark font-serif">“</span>
+            {{ quote.content }}
+            <span class="ca-quote-mark font-serif">”</span>
+        </div>
+        <div class="ca-quote-critique-ticket">
+            <div class="ca-ticket-stamp font-mono">REVIEW // 锐评</div>
+            <div class="ca-ticket-content font-sans">
+                {{ quote.reason | safe }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
