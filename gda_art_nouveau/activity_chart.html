@@ -1,0 +1,24 @@
+{% if chart_data %}
+<div class="an-chart-wrap">
+    <div class="an-chart-bars">
+        {% for item in chart_data %}
+        {% set bar_percentage = item.percentage | float %}
+        {% if bar_percentage < 0 %}
+        {% set bar_percentage = 0 %}
+        {% elif bar_percentage > 100 %}
+        {% set bar_percentage = 100 %}
+        {% endif %}
+
+        <div class="an-chart-col">
+            {% if item.count > 0 %}
+            <span class="an-chart-val">{{ item.count }}</span>
+            {% endif %}
+            <div class="an-chart-track">
+                <div class="an-chart-fill" style="height: {{ bar_percentage }}%;"></div>
+            </div>
+            <span class="an-chart-hour">{{ "%02d" | format(item.hour) }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}

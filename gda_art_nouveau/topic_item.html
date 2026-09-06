@@ -1,0 +1,44 @@
+{% if topics %}
+<div class="an-topic-list">
+    {% for topic in topics %}
+    <div class="an-topic-card avoid-break">
+        <div class="an-topic-head">
+            <div class="an-topic-num-badge">
+                <svg class="an-num-wreath" viewBox="0 0 36 36" fill="none">
+                    <circle cx="18" cy="18" r="16" stroke="#c9a227" stroke-width="1.2" stroke-dasharray="2 3" opacity="0.6"/>
+                    <circle cx="18" cy="18" r="13" stroke="#2d5016" stroke-width="0.8" opacity="0.4"/>
+                    <path d="M10 24 C8 18 12 10 18 8 C24 10 28 18 26 24" stroke="#c9a227" stroke-width="1" stroke-linecap="round"/>
+                </svg>
+                <span class="an-topic-index">{{ "%02d" | format(topic.index) }}</span>
+            </div>
+            <div class="an-topic-header-text">
+                <h3 class="an-topic-title">{{ topic.topic.topic }}</h3>
+                <div class="an-topic-meta">
+                    <span class="an-meta-leaf">
+                        <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#c9a227" stroke-width="1.2">
+                            <path d="M2 14 C4 8 10 3 14 2 C13 7 8 12 2 14 Z"/>
+                            <path d="M2 14 L8 8"/>
+                        </svg>
+                    </span>
+                    <span class="an-meta-label">记录者与群友</span>
+                    <span class="an-meta-names">{{ topic.contributors }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="an-topic-body">
+            <div class="an-topic-detail">{{ topic.detail | safe }}</div>
+        </div>
+        {% if not loop.last %}
+        <div class="an-vine-divider">
+            <svg viewBox="0 0 200 12" fill="none" preserveAspectRatio="none">
+                <path d="M0 6 Q50 1 100 6 T200 6" stroke="#c9a227" stroke-width="0.8" opacity="0.45"/>
+                <circle cx="100" cy="6" r="2.5" fill="#c9a227" opacity="0.75"/>
+                <circle cx="85" cy="4" r="1.5" fill="#2d5016" opacity="0.5"/>
+                <circle cx="115" cy="8" r="1.5" fill="#2d5016" opacity="0.5"/>
+            </svg>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

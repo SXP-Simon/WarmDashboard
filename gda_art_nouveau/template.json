@@ -1,0 +1,9 @@
+{
+    "name": "gda_art_nouveau",
+    "label": "新艺术运动风 (Art Nouveau)",
+    "desc": "源自19世纪末的有机曲线美学，流动的金色藤蔓纹样、Mucha海报式圆拱饰框与典雅象牙白，传递自然与艺术的和谐统一",
+    "author": "SXP-Simon",
+    "version": "1.0.0",
+    "has_image": true,
+    "has_html": true
+}

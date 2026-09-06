@@ -1,9 +1,10 @@
 # AGENTS.md — AstrBot 报告视觉模板开发守则
 
-本仓库支持三套核心设计风格规范：
+本仓库支持四套核心设计风格规范：
 1. **日系清新风 (Japanese Fresh)** (`gda_japanese_fresh`)
 2. **暖色仪表盘 (Warm Dashboard)** (`gda_warm_dashboard`)
 3. **拼贴艺术风 (Collage Art)** (`gda_collage_art`)
+4. **新艺术运动风 (Art Nouveau)** (gda_art_nouveau)
 
 ---
 
@@ -1263,6 +1264,311 @@ Create a portfolio showcase page using Collage Art style with project grid, abou
 - [ ] 禁止使用毛玻璃效果（backdrop-blur）
 - [ ] 禁止使用统一整齐的对齐方式
 - [ ] 禁止对有 hover/group-hover Tailwind 变换的元素使用 style={{ transform }} 内联属性（会导致 transform 冲突）
+
+
+---
+
+# 模块四：新艺术运动风 (Art Nouveau) 规范
+
+STYLEKIT_STYLE_REFERENCE
+style_name: 新艺术运动风
+style_slug: art-nouveau
+style_source: /styles/art-nouveau
+
+# Hard Prompt
+
+## 什么时候用
+当你希望 AI 严格按风格规则生成代码时使用。它是生产界面最稳的默认选择。
+
+## 怎么用
+- 把完整提示词复制到 ChatGPT、Claude、Cursor 或其他编码助手。
+- 在提示词后追加具体产品、页面或组件需求。
+- 生成后按禁止项和交互状态检查，确认没有风格漂移。
+
+请严格遵守以下风格规则并保持一致性，禁止风格漂移。
+
+## 执行要求
+
+- 优先保证风格一致性，其次再做创意延展。
+- 遇到冲突时以禁止项为最高优先级。
+- 输出前自检：颜色、排版、间距、交互是否仍属于该风格。
+
+## Style Rules
+
+你是一个 Art Nouveau 设计风格的前端开发专家。生成的所有代码必须严格遵守以下约束：
+
+## 绝对禁止
+
+- 禁止使用生硬的直角和几何形状
+- 禁止使用霓虹或高饱和度的现代色彩
+- 禁止使用粗犷的无装饰设计
+- 禁止使用现代无衬线字体作为标题
+- 禁止使用短促生硬的 duration-150 或 duration-200
+
+## 必须遵守
+
+- 使用有机曲线和流动线条
+- 采用深绿、金色、象牙白为主色调
+- 添加藤蔓、花卉等自然装饰元素
+- 使用衬线或装饰性字体
+- 保持优雅精致的整体质感
+- 圆润的边角和柔和的过渡
+- 使用 duration-500 或 duration-700 配合 ease-in-out 表现自然律动
+- 悬停时光晕柔和扩散（shadow 变大变柔和）
+- 装饰元素在悬停时轻微放大或旋转，像花朵绽放
+
+## Animation & Interaction Rules
+
+- Organic Flow: 动画必须像植物生长一样自然流动。使用 duration-500 或 duration-700 配合平滑的 ease-in-out。
+- Soft Glow: 悬停时光晕应该柔和地向外扩散（shadow 从小变大、从浅变深），不要使用生硬的位移。
+- Decorative Flourishes: 装饰元素在悬停时产生轻微的放大或旋转（scale(1.1) rotate(5deg)），像花朵绽放。
+- Radial Highlight: 卡片悬停时用 radial-gradient 伪元素产生角落光晕（opacity 0 -> 100）。
+- Gentle Float: 卡片悬停时微微上浮 -translate-y-1，配合阴影扩散。
+
+## 配色
+
+主色调：
+- 深绿: #2d5016
+- 金色: #c9a227
+- 象牙白: #f5f0e1
+- 紫藤: #8b6db5
+
+## 特殊元素
+
+- 有机曲线 SVG 装饰
+- 藤蔓和花卉图案
+- 金色边框和光晕
+- 优雅的渐变过渡
+
+## Layout & Spacing
+- Section padding: py-16 md:py-24
+- Card padding: p-6 md:p-8
+- Gap between cards: gap-6 md:gap-8
+- Max content width: max-w-6xl mx-auto
+
+## Responsive Design
+- Mobile-first approach with Tailwind breakpoints
+- Stack elements vertically on mobile (flex-col), row on desktop (md:flex-row)
+- Reduce font sizes on mobile: text-3xl md:text-5xl for headings
+- Touch-friendly targets: min 44px for interactive elements
+
+## Self-Check Verification
+After generating code, verify:
+1. All interactive elements have hover/focus/active states
+2. Color contrast meets WCAG 2.1 AA (4.5:1 for text)
+3. Layout is responsive across breakpoints
+4. Typography hierarchy is clear (h1 > h2 > h3 > body)
+5. Spacing is consistent using the defined scale
+6. All animations respect prefers-reduced-motion
+
+---
+
+# Art Nouveau (新艺术运动风) Design System
+
+> 源自19世纪末的有机曲线美学，以流动的藤蔓纹样、自然花卉元素、Mucha风格海报装饰和优雅的衬线字体为特征，传递自然与艺术的和谐统一。
+
+## 核心理念
+
+Art Nouveau（新艺术运动）是19世纪末至20世纪初的国际性艺术运动，以自然界的有机形态为灵感，将装饰艺术推向极致。
+
+核心理念：
+- 有机曲线：受植物和花卉启发的流动线条
+- 自然统一：艺术与自然的和谐融合
+- 整体设计：从建筑到家具到海报的统一美学
+- 装饰之美：精致的装饰纹样赋予功能性物品以艺术价值
+- 生长律动：交互应如植物生长般缓慢、柔和、有机
+
+设计原则：
+- 视觉一致性：所有组件必须遵循统一的视觉语言，从色彩到字体到间距保持谐调
+- 层次分明：通过颜色深浅、字号大小、留白空间建立清晰的信息层级
+- 交互反馈：每个可交互元素都必须有明确的 hover、active、focus 状态反馈
+- 响应式适配：设计必须在移动端、平板、桌面端上保持一致的体验
+- 无障碍性：确保色彩对比度符合 WCAG 2.1 AA 标准，所有交互元素可键盘访问
+
+---
+
+## Token 字典（精确 Class 映射）
+
+### 边框
+`
+宽度: border-2
+颜色: border-[#c9a227]/60
+圆角: rounded-2xl
+`
+
+### 阴影
+`
+小: shadow-sm
+中: shadow-md
+大: shadow-lg
+悬停: hover:shadow-lg
+聚焦: focus:shadow-[0_0_12px_rgba(201,162,39,0.3)]
+`
+
+### 交互效果
+`
+悬停位移: hover:-translate-y-1
+悬停缩放: hover:scale-105
+悬停透明度: （无）
+过渡动画: transition-all duration-300 ease-in-out
+按下状态: active:scale-95
+`
+
+### 字体
+`
+标题: font-serif tracking-wide
+正文: font-serif
+等宽: font-mono
+`
+
+### 字号
+`
+Hero: text-4xl md:text-6xl lg:text-8xl
+H1: text-3xl md:text-5xl
+H2: text-2xl md:text-4xl
+H3: text-xl md:text-2xl
+正文: text-sm md:text-base
+小字: text-xs md:text-sm
+`
+
+### 间距
+`
+Section: py-12 md:py-20 lg:py-28
+容器: px-4 md:px-8 lg:px-12
+卡片: p-5 md:p-8
+小间距: gap-3 md:gap-4
+中间距: gap-4 md:gap-6
+大间距: gap-6 md:gap-10
+`
+
+### 颜色角色
+`
+背景主色: bg-[#f5f0e1]
+背景辅色: bg-[#e8dcc8]
+背景强调色: bg-[#2d5016], bg-[#c9a227], bg-[#8b6db5]
+正文主色: text-[#2d5016]
+正文辅色: text-[#c9a227]
+正文弱化色: text-[#2d5016]/60
+按钮主色: bg-[#2d5016] text-[#f5f0e1] border-2 border-[#c9a227]
+按钮辅色: bg-[#f5f0e1] text-[#2d5016] border-2 border-[#2d5016]
+`
+
+---
+
+## [FORBIDDEN] 绝对禁止
+
+以下 class 在本风格中**绝对禁止使用**，生成时必须检查并避免：
+
+### 禁止的 Class
+- 
+ounded-none
+- g-black
+- g-gray-900
+- g-[#0a0a1a]
+- 	ext-[#ff00ff]
+- 	ext-[#00ffff]
+- shadow-[0_0_16px_rgba(255,0,255
+- order-[#ff00ff]
+- order-[#00ffff]
+- uppercase
+- ont-bold tracking-widest
+
+---
+
+## [REQUIRED] 必须包含
+
+### 按钮必须包含
+`
+rounded-full
+font-serif
+border-2 border-[#c9a227]
+transition-all duration-300 ease-in-out
+`
+
+### 卡片必须包含
+`
+rounded-2xl
+bg-[#f5f0e1]
+border-2 border-[#c9a227]/60
+shadow-md
+`
+
+### 输入框必须包含
+`
+rounded-full
+border-2 border-[#c9a227]/40
+bg-[#f5f0e1]
+text-[#2d5016]
+focus:border-[#c9a227]
+focus:outline-none
+`
+
+---
+
+## [EXAMPLES] 示例 Prompt
+
+### 1. 花卉展览页面
+
+Art Nouveau风格的花卉展览展示
+
+`
+用 Art Nouveau 风格创建一个花卉展览页面，要求：
+1. 背景：象牙白渐变 + 有机曲线装饰
+2. 标题：衬线字体，深绿色
+3. 卡片：金色边框，圆润边角，hover 时光晕扩散 + 微浮动
+4. 添加藤蔓和花卉 SVG 装饰元素
+5. 所有交互 duration-500 以上，ease-in-out
+6. 整体优雅精致的自然美学
+`
+
+### 2. SaaS 着陆页
+
+生成 新艺术运动风风格的 SaaS 产品着陆页
+
+`
+Create a SaaS landing page using Art Nouveau style with hero section, feature grid, testimonials, pricing table, and footer.
+`
+
+### 3. 作品集展示
+
+生成 新艺术运动风风格的作品集页面
+
+`
+Create a portfolio showcase page using Art Nouveau style with project grid, about section, contact form, and consistent visual language.
+`
+
+## 绝对禁止（匹配即拒绝）
+
+以下模式一旦出现，视为风格违规——不找借口，直接重写。
+
+- 使用生硬的直角和几何形状
+- 使用霓虹或高饱和度的现代色彩
+- 使用粗犷的无装饰设计
+- 使用现代无衬线字体作为标题
+- 使用短促生硬的 duration-150 或 duration-200
+
+## 自检清单（交付前逐条确认）
+
+如果任何一条不通过，说明风格漂移了——修改后再交付。
+
+- [ ] 没有紫色到蓝色的渐变
+- [ ] 没有使用 Inter / Roboto / Geist 等过度使用的字体
+- [ ] 没有嵌套卡片（卡片里面套卡片）
+- [ ] 没有在彩色背景上放灰色文字
+- [ ] 正文对比度满足 WCAG AA（≥4.5:1）
+- [ ] 没有 bounce / elastic 缓动曲线
+- [ ] 动效有 prefers-reduced-motion 备选方案
+- [ ] 正文行宽不超过 65-75 个字符
+- [ ] 没有单侧粗边框装饰（border-left/right accent stripe）
+- [ ] 没有渐变文字（background-clip: text）
+- [ ] 没有把玻璃态（glassmorphism）当作默认风格
+- [ ] 没有 tiny uppercase tracked eyebrow 放在每个 section 标题上面
+- [ ] 禁止使用生硬的直角和几何形状
+- [ ] 禁止使用霓虹或高饱和度的现代色彩
+- [ ] 禁止使用粗犷的无装饰设计
+- [ ] 禁止使用现代无衬线字体作为标题
+- [ ] 禁止使用短促生硬的 duration-150 或 duration-200
+
 
 # AstrBot 插件运行与渲染规则
 

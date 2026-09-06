@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="{{ 'zh-CN' if t2i_font_source == 'Mainland' else 'zh-Hant' }}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新艺术日报 · {{ current_date }}</title>
+    <link rel="preconnect" href="{{ t2i_google_fonts_mirror }}">
+    <link rel="preconnect" href="{{ t2i_gstatic_mirror }}" crossorigin>
+    <link
+        href="{{ t2i_google_fonts_mirror }}/css2?family=Cinzel:wght@400;600;700&family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Art Nouveau Palette */
+            --an-primary: #2d5016;       /* 森林深绿 */
+            --an-gold: #c9a227;          /* 华丽复古金 */
+            --an-gold-light: #e5c158;    /* 亮金色 */
+            --an-gold-dim: rgba(201, 162, 39, 0.45);
+            --an-ivory: #f5f0e1;         /* 象牙白主色 */
+            --an-cream: #fbf8f0;         /* 卡片柔白底色 */
+            --an-beige: #e8dcc8;         /* 辅色复古米色 */
+            --an-wisteria: #8b6db5;      /* 紫藤花紫 */
+            --an-sage: #4a7c3f;          /* 鼠尾草绿 */
+
+            --an-text-main: #2d5016;
+            --an-text-sub: rgba(45, 80, 22, 0.8);
+            --an-text-muted: rgba(45, 80, 22, 0.55);
+
+            --radius-card: 20px;
+            --radius-pill: 9999px;
+
+            --font-serif: 'Cinzel', {% if t2i_font_source == 'Mainland' %}'Noto Serif SC'{% else %}'Noto Serif TC'{% endif %}, 'Songti SC', 'SimSun', Georgia, serif;
+            --font-sans: {% if t2i_font_source == 'Mainland' %}'Noto Sans SC', 'Noto Sans TC'{% else %}'Noto Sans TC', 'Noto Sans SC'{% endif %}, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            color: var(--an-text-main);
+            background-color: var(--an-ivory);
+            background-image:
+                radial-gradient(ellipse at 50% 0%, rgba(201, 162, 39, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 10% 30%, rgba(45, 80, 22, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 90% 70%, rgba(139, 109, 181, 0.05) 0%, transparent 50%),
+                linear-gradient(0deg, rgba(201, 162, 39, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 162, 39, 0.04) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+            line-height: 1.75;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .an-poster-container {
+            width: 750px;
+            margin: 0 auto;
+            padding: 36px 28px 48px;
+            position: relative;
+        }
+
+        /* Outer Art Nouveau Frame */
+        .an-outer-border {
+            border: 2px solid var(--an-gold);
+            border-radius: 28px;
+            padding: 24px 20px 32px;
+            background: rgba(245, 240, 225, 0.7);
+            box-shadow: 0 0 0 4px var(--an-ivory), 0 0 0 6px var(--an-gold-dim), 0 8px 32px rgba(45, 80, 22, 0.08);
+            position: relative;
+        }
+
+        .an-corner-ornament {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            pointer-events: none;
+            opacity: 0.85;
+        }
+        .an-corner-tl { top: 6px; left: 6px; }
+        .an-corner-tr { top: 6px; right: 6px; transform: scaleX(-1); }
+        .an-corner-bl { bottom: 6px; left: 6px; transform: scaleY(-1); }
+        .an-corner-br { bottom: 6px; right: 6px; transform: scale(-1); }
+
+        .avoid-break {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        /* ============ Header Area ============ */
+        .an-header {
+            text-align: center;
+            padding: 12px 16px 28px;
+            position: relative;
+        }
+
+        .an-mucha-halo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .an-mucha-halo svg {
+            width: 120px;
+            height: 48px;
+            stroke: var(--an-gold);
+        }
+
+        .an-sub-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--an-gold);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .an-eyebrow-line {
+            width: 28px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--an-gold));
+        }
+        .an-eyebrow-line.right {
+            background: linear-gradient(90deg, var(--an-gold), transparent);
+        }
+
+        .an-main-title {
+            font-family: var(--font-serif);
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--an-primary);
+            letter-spacing: 6px;
+            margin-bottom: 12px;
+            text-shadow: 0 1px 2px rgba(201, 162, 39, 0.2);
+            line-height: 1.2;
+        }
+
+        .an-meta-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .an-meta-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 16px;
+            border: 1.5px solid var(--an-gold-dim);
+            border-radius: var(--radius-pill);
+            background: rgba(251, 248, 240, 0.9);
+            font-size: 12px;
+            color: var(--an-text-sub);
+            letter-spacing: 1px;
+            box-shadow: 0 2px 6px rgba(201, 162, 39, 0.1);
+        }
+
+        /* ============ KPI Row ============ */
+        .an-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin: 20px 0 26px;
+        }
+
+        .an-kpi-card {
+            background: var(--an-cream);
+            border: 2px solid var(--an-gold-dim);
+            border-radius: 18px;
+            padding: 18px 10px 16px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(45, 80, 22, 0.05);
+        }
+
+        .an-kpi-flourish {
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 6px;
+            opacity: 0.7;
+        }
+
+        .an-kpi-number {
+            font-family: var(--font-serif);
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--an-primary);
+            line-height: 1.2;
+            margin-top: 4px;
+        }
+
+        .an-kpi-label {
+            font-size: 12px;
+            color: var(--an-text-sub);
+            margin-top: 4px;
+            letter-spacing: 1.5px;
+        }
+
+        /* ============ Section Card ============ */
+        .an-card {
+            background: var(--an-cream);
+            border: 2px solid var(--an-gold-dim);
+            border-radius: var(--radius-card);
+            padding: 28px 24px;
+            margin-top: 22px;
+            position: relative;
+            box-shadow: 0 6px 20px rgba(45, 80, 22, 0.06);
+        }
+
+        .an-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1.5px solid var(--an-gold-dim);
+            position: relative;
+        }
+
+        .an-head-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .an-section-icon {
+            width: 24px;
+            height: 24px;
+            stroke: var(--an-gold);
+            flex-shrink: 0;
+        }
+
+        .an-card-title {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--an-primary);
+            letter-spacing: 2px;
+        }
+
+        .an-head-tag {
+            font-size: 11px;
+            color: var(--an-gold);
+            letter-spacing: 1.5px;
+            padding: 2px 10px;
+            border: 1px solid var(--an-gold-dim);
+            border-radius: var(--radius-pill);
+            background: rgba(201, 162, 39, 0.08);
+        }
+
+        /* Peak Banner */
+        .an-peak-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 18px;
+            border: 1.5px solid var(--an-gold-dim);
+            border-radius: var(--radius-pill);
+            background: rgba(232, 220, 200, 0.4);
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .an-peak-desc {
+            color: var(--an-text-sub);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .an-peak-desc strong {
+            color: var(--an-primary);
+            font-weight: 700;
+        }
+
+        .an-peak-badge {
+            font-size: 11px;
+            color: var(--an-cream);
+            background: var(--an-primary);
+            border: 1px solid var(--an-gold);
+            border-radius: var(--radius-pill);
+            padding: 2px 12px;
+            letter-spacing: 1px;
+        }
+
+        /* 24h Activity Chart */
+        .an-chart-wrap {
+            width: 100%;
+            padding-top: 8px;
+        }
+
+        .an-chart-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 155px;
+            padding-bottom: 4px;
+            border-bottom: 1.5px solid var(--an-gold-dim);
+        }
+
+        .an-chart-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+            flex: 1;
+            margin: 0 1.5px;
+            position: relative;
+        }
+
+        .an-chart-val {
+            position: absolute;
+            top: -16px;
+            font-size: 10px;
+            color: var(--an-gold);
+            font-weight: 600;
+        }
+
+        .an-chart-track {
+            width: 100%;
+            height: calc(100% - 18px);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background: rgba(201, 162, 39, 0.08);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .an-chart-fill {
+            width: 100%;
+            background: linear-gradient(180deg, var(--an-gold) 0%, var(--an-primary) 100%);
+            border-radius: 9999px;
+            min-height: 3px;
+        }
+
+        .an-chart-hour {
+            margin-top: 6px;
+            font-size: 10px;
+            color: var(--an-text-muted);
+            font-weight: 500;
+        }
+
+        /* Topics */
+        .an-topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .an-topic-card {
+            position: relative;
+            padding: 4px 0 8px;
+        }
+
+        .an-topic-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+
+        .an-topic-num-badge {
+            position: relative;
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .an-num-wreath {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .an-topic-index {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--an-primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .an-topic-header-text {
+            flex: 1;
+        }
+
+        .an-topic-title {
+            font-family: var(--font-serif);
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--an-primary);
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .an-topic-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--an-text-sub);
+            padding: 2px 10px;
+            background: rgba(232, 220, 200, 0.4);
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--an-gold-dim);
+        }
+
+        .an-meta-leaf svg {
+            display: block;
+        }
+
+        .an-meta-label {
+            color: var(--an-gold);
+            font-weight: 600;
+        }
+
+        .an-topic-body {
+            padding-left: 50px;
+        }
+
+        .an-topic-detail {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--an-text-sub);
+            line-height: 1.8;
+        }
+
+        .an-topic-detail b, .an-topic-detail strong {
+            color: var(--an-primary);
+            font-weight: 600;
+        }
+
+        .an-vine-divider {
+            width: 100%;
+            height: 14px;
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .an-vine-divider svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* User Cameo Profiles */
+        .an-profile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px 20px;
+        }
+
+        .an-profile-card {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            background: rgba(245, 240, 225, 0.5);
+            border: 1.5px solid var(--an-gold-dim);
+            border-radius: 18px;
+            padding: 14px 14px 16px;
+        }
+
+        .an-cameo-frame {
+            position: relative;
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+        }
+
+        .an-cameo-border {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .an-cameo-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .an-avatar-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--an-gold);
+        }
+
+        .an-profile-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .an-profile-header {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .an-profile-name {
+            font-family: var(--font-serif);
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--an-primary);
+        }
+
+        .an-pill-badge {
+            font-size: 11px;
+            border-radius: var(--radius-pill);
+            padding: 1px 8px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .an-badge-gold {
+            background: rgba(201, 162, 39, 0.18);
+            color: #8c6e12;
+            border: 1px solid var(--an-gold);
+        }
+
+        .an-badge-wisteria {
+            background: rgba(139, 109, 181, 0.16);
+            color: #644a8c;
+            border: 1px solid rgba(139, 109, 181, 0.4);
+        }
+
+        .an-profile-reason {
+            font-family: var(--font-sans);
+            font-size: 13px;
+            color: var(--an-text-sub);
+            line-height: 1.6;
+        }
+
+        /* Quotes */
+        .an-quote-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .an-quote-card {
+            padding: 18px 20px;
+            border: 1.5px solid var(--an-gold-dim);
+            border-radius: 18px;
+            background: rgba(245, 240, 225, 0.4);
+            position: relative;
+        }
+
+        .an-quote-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .an-quote-avatar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .an-avatar-mini-ring {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1.5px solid var(--an-gold);
+            padding: 1px;
+            background: var(--an-cream);
+        }
+
+        .an-avatar-mini-ring img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .an-quote-sender-info {
+            display: flex;
+            flex-direction: column;
+            margin-left: 8px;
+            flex: 1;
+        }
+
+        .an-quote-sender {
+            font-family: var(--font-serif);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--an-primary);
+        }
+
+        .an-quote-tagline {
+            font-size: 11px;
+            color: var(--an-gold);
+            letter-spacing: 1px;
+        }
+
+        .an-quote-text {
+            font-family: var(--font-serif);
+            font-size: 15px;
+            color: var(--an-primary);
+            line-height: 1.8;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+            padding: 0 4px;
+        }
+
+        .an-quote-mark-open, .an-quote-mark-close {
+            color: var(--an-gold);
+            font-size: 18px;
+            font-weight: 700;
+            padding: 0 2px;
+        }
+
+        .an-quote-review {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--an-gold-dim);
+            font-size: 13px;
+        }
+
+        .an-review-icon {
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .an-review-badge {
+            color: var(--an-gold);
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .an-review-text {
+            font-family: var(--font-sans);
+            color: var(--an-text-sub);
+            line-height: 1.6;
+        }
+
+        /* Chat Quality */
+        .an-quality-summary {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--an-text-sub);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            padding: 14px 18px;
+            border: 1.5px solid var(--an-gold-dim);
+            border-left: 4px solid var(--an-gold);
+            background: rgba(232, 220, 200, 0.45);
+            border-radius: 0 14px 14px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .an-summary-flourish {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .an-summary-text {
+            flex: 1;
+        }
+
+        .an-dimension-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .an-dim-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .an-dim-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--an-primary);
+        }
+
+        .an-dim-ratio {
+            color: var(--an-gold);
+            font-family: var(--font-serif);
+            font-weight: 700;
+        }
+
+        .an-dim-track {
+            height: 6px;
+            background: rgba(201, 162, 39, 0.15);
+            border-radius: var(--radius-pill);
+            overflow: hidden;
+            border: 1px solid var(--an-gold-dim);
+        }
+
+        .an-dim-fill {
+            height: 100%;
+            border-radius: var(--radius-pill);
+        }
+
+        .an-fill-green {
+            background: linear-gradient(90deg, var(--an-sage), var(--an-primary));
+        }
+
+        .an-fill-gold {
+            background: linear-gradient(90deg, var(--an-gold-light), var(--an-gold));
+        }
+
+        .an-fill-wisteria {
+            background: linear-gradient(90deg, var(--an-wisteria), #644a8c);
+        }
+
+        .an-dim-note {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--an-text-muted);
+        }
+
+        /* Footer */
+        .an-footer {
+            margin-top: 36px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--an-text-muted);
+            line-height: 1.9;
+        }
+
+        .an-footer-wreath {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .an-footer-wreath svg {
+            width: 80px;
+            height: 20px;
+            stroke: var(--an-gold);
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="an-poster-container">
+        <div class="an-outer-border">
+            <!-- Corner Filigrees -->
+            <svg class="an-corner-ornament an-corner-tl" viewBox="0 0 40 40" fill="none" stroke="#c9a227" stroke-width="1.5">
+                <path d="M4 36 C4 18 18 4 36 4" stroke-linecap="round"/>
+                <path d="M4 24 C4 13 13 4 24 4" stroke-linecap="round" opacity="0.6"/>
+                <circle cx="8" cy="8" r="2.5" fill="#c9a227"/>
+            </svg>
+            <svg class="an-corner-ornament an-corner-tr" viewBox="0 0 40 40" fill="none" stroke="#c9a227" stroke-width="1.5">
+                <path d="M4 36 C4 18 18 4 36 4" stroke-linecap="round"/>
+                <path d="M4 24 C4 13 13 4 24 4" stroke-linecap="round" opacity="0.6"/>
+                <circle cx="8" cy="8" r="2.5" fill="#c9a227"/>
+            </svg>
+            <svg class="an-corner-ornament an-corner-bl" viewBox="0 0 40 40" fill="none" stroke="#c9a227" stroke-width="1.5">
+                <path d="M4 36 C4 18 18 4 36 4" stroke-linecap="round"/>
+                <path d="M4 24 C4 13 13 4 24 4" stroke-linecap="round" opacity="0.6"/>
+                <circle cx="8" cy="8" r="2.5" fill="#c9a227"/>
+            </svg>
+            <svg class="an-corner-ornament an-corner-br" viewBox="0 0 40 40" fill="none" stroke="#c9a227" stroke-width="1.5">
+                <path d="M4 36 C4 18 18 4 36 4" stroke-linecap="round"/>
+                <path d="M4 24 C4 13 13 4 24 4" stroke-linecap="round" opacity="0.6"/>
+                <circle cx="8" cy="8" r="2.5" fill="#c9a227"/>
+            </svg>
+
+            <!-- 头部区域 -->
+            <header class="an-header">
+                <div class="an-mucha-halo">
+                    <svg viewBox="0 0 160 60" fill="none">
+                        <path d="M10 50 C40 10 120 10 150 50" stroke="#c9a227" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M30 50 C50 22 110 22 130 50" stroke="#2d5016" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+                        <circle cx="80" cy="18" r="5" stroke="#c9a227" stroke-width="1.2" fill="#f5f0e1"/>
+                        <circle cx="80" cy="18" r="2" fill="#c9a227"/>
+                        <circle cx="56" cy="28" r="3" fill="#c9a227" opacity="0.7"/>
+                        <circle cx="104" cy="28" r="3" fill="#c9a227" opacity="0.7"/>
+                    </svg>
+                </div>
+                <div class="an-sub-eyebrow">
+                    <span class="an-eyebrow-line"></span>
+                    <span>ART NOUVEAU DAILY CHRONICLE</span>
+                    <span class="an-eyebrow-line right"></span>
+                </div>
+                <h1 class="an-main-title">新 艺 术 日 报</h1>
+                <div class="an-meta-bar">
+                    <div class="an-meta-pill">
+                        <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="#c9a227" stroke-width="1.2">
+                            <rect x="2" y="3" width="12" height="11" rx="2"/>
+                            <path d="M2 7H14M5 1.5V4.5M11 1.5V4.5"/>
+                        </svg>
+                        <span>{{ current_date }}</span>
+                    </div>
+                    <div class="an-meta-pill">
+                        <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="#c9a227" stroke-width="1.2">
+                            <circle cx="8" cy="8" r="6"/>
+                            <path d="M8 4.5V8L10.5 10.5"/>
+                        </svg>
+                        <span>{{ current_datetime }}</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- KPI 统计卡片网格 -->
+            <section class="an-kpi-grid">
+                <div class="an-kpi-card">
+                    <svg class="an-kpi-flourish" viewBox="0 0 40 10" fill="none" stroke="#c9a227" stroke-width="1">
+                        <path d="M2 5 Q20 0 38 5"/>
+                    </svg>
+                    <div class="an-kpi-number">{{ message_count }}</div>
+                    <div class="an-kpi-label">消息计数</div>
+                </div>
+                <div class="an-kpi-card">
+                    <svg class="an-kpi-flourish" viewBox="0 0 40 10" fill="none" stroke="#c9a227" stroke-width="1">
+                        <path d="M2 5 Q20 0 38 5"/>
+                    </svg>
+                    <div class="an-kpi-number">{{ participant_count }}</div>
+                    <div class="an-kpi-label">参与群友</div>
+                </div>
+                <div class="an-kpi-card">
+                    <svg class="an-kpi-flourish" viewBox="0 0 40 10" fill="none" stroke="#c9a227" stroke-width="1">
+                        <path d="M2 5 Q20 0 38 5"/>
+                    </svg>
+                    <div class="an-kpi-number">{{ emoji_count }}</div>
+                    <div class="an-kpi-label">表情点缀</div>
+                </div>
+                <div class="an-kpi-card">
+                    <svg class="an-kpi-flourish" viewBox="0 0 40 10" fill="none" stroke="#c9a227" stroke-width="1">
+                        <path d="M2 5 Q20 0 38 5"/>
+                    </svg>
+                    <div class="an-kpi-number">{{ total_characters }}</div>
+                    <div class="an-kpi-label">文字总数</div>
+                </div>
+            </section>
+
+            <!-- 今日活跃轨迹卡片 -->
+            <section class="an-card avoid-break">
+                <div class="an-card-head">
+                    <div class="an-head-left">
+                        <svg class="an-section-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M12 7V12L15 15"/>
+                            <circle cx="12" cy="12" r="2" fill="#c9a227"/>
+                        </svg>
+                        <h2 class="an-card-title">时间的轨迹</h2>
+                    </div>
+                    <span class="an-head-tag">24小时流转</span>
+                </div>
+
+                <div class="an-peak-box">
+                    <div class="an-peak-desc">
+                        <span>最活跃的时段</span>
+                        <strong>{{ most_active_period }}</strong>
+                    </div>
+                    <span class="an-peak-badge">高光时刻</span>
+                </div>
+
+                {{ hourly_chart_html | safe }}
+            </section>
+
+            <!-- 今日话题聚类 -->
+            <section class="an-card">
+                <div class="an-card-head">
+                    <div class="an-head-left">
+                        <svg class="an-section-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20V22H6.5A2.5 2.5 0 0 1 4 19.5V4.5A2.5 2.5 0 0 1 6.5 2Z"/>
+                            <path d="M8 7H16M8 11H14" stroke="#c9a227"/>
+                        </svg>
+                        <h2 class="an-card-title">话题的交织</h2>
+                    </div>
+                    <span class="an-head-tag">思想回响</span>
+                </div>
+                {{ topics_html | safe }}
+            </section>
+
+            <!-- 群友个性画像 -->
+            <section class="an-card">
+                <div class="an-card-head">
+                    <div class="an-head-left">
+                        <svg class="an-section-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M5 20 C5 15.5 8 13 12 13 C16 13 19 15.5 19 20"/>
+                            <path d="M8 8 C8 5 10 3 12 3 C14 3 16 5 16 8"/>
+                        </svg>
+                        <h2 class="an-card-title">群友的侧影</h2>
+                    </div>
+                    <span class="an-head-tag">典雅印记</span>
+                </div>
+                {{ titles_html | safe }}
+            </section>
+
+            <!-- 今日高光金句 -->
+            <section class="an-card">
+                <div class="an-card-head">
+                    <div class="an-head-left">
+                        <svg class="an-section-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            <circle cx="9" cy="10" r="1" fill="#c9a227"/>
+                            <circle cx="15" cy="10" r="1" fill="#c9a227"/>
+                        </svg>
+                        <h2 class="an-card-title">吉光片羽</h2>
+                    </div>
+                    <span class="an-head-tag">字句生辉</span>
+                </div>
+                {{ quotes_html | safe }}
+            </section>
+
+            <!-- 聊天质量（可选） -->
+            {% if chat_quality_html %}
+            <section class="an-card avoid-break">
+                <div class="an-card-head">
+                    <div class="an-head-left">
+                        <svg class="an-section-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
+                            <path d="M12 2 L15 8 L22 9 L17 14 L18 21 L12 18 L6 21 L7 14 L2 9 L9 8 Z"/>
+                        </svg>
+                        <h2 class="an-card-title">氛围与温润度</h2>
+                    </div>
+                    <span class="an-head-tag">品质锐评</span>
+                </div>
+                {{ chat_quality_html | safe }}
+            </section>
+            {% endif %}
+
+            <!-- 页脚 -->
+            <footer class="an-footer">
+                <div class="an-footer-wreath">
+                    <svg viewBox="0 0 120 24" fill="none" stroke-width="1.2">
+                        <path d="M10 12 Q40 2 60 12 Q80 2 110 12" stroke="#c9a227"/>
+                        <circle cx="60" cy="12" r="3" fill="#c9a227"/>
+                        <circle cx="35" cy="8" r="1.5" fill="#2d5016"/>
+                        <circle cx="85" cy="8" r="1.5" fill="#2d5016"/>
+                    </svg>
+                </div>
+                <p>由 AstrBot 日常群聊分析插件优雅呈现 · Art Nouveau 风格</p>
+                <p>分析耗时 Token: {{ total_tokens }} (Prompt: {{ prompt_tokens }} / Completion: {{ completion_tokens }})</p>
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>

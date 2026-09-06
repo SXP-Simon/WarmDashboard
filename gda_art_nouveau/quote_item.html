@@ -1,0 +1,42 @@
+{% if quotes %}
+<div class="an-quote-list">
+    {% for quote in quotes %}
+    <div class="an-quote-card avoid-break">
+        <div class="an-quote-header">
+            <div class="an-quote-avatar-wrap">
+                <div class="an-avatar-mini-ring">
+                    {% if quote.avatar_url %}
+                    <img src="{{ quote.avatar_url }}" alt="{{ quote.sender }}">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="an-quote-sender-info">
+                <span class="an-quote-sender">{{ quote.sender }}</span>
+                <span class="an-quote-tagline">今日吉光片羽</span>
+            </div>
+            <div class="an-quote-flourish">
+                <svg viewBox="0 0 28 20" width="28" height="20" fill="none" stroke="#c9a227" stroke-width="1.2">
+                    <path d="M4 14 C4 8 8 4 14 4 C10 8 10 12 12 16" stroke-linecap="round"/>
+                    <path d="M16 14 C16 8 20 4 26 4 C22 8 22 12 24 16" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+        <div class="an-quote-text">
+            <span class="an-quote-mark-open">“</span>{{ quote.content }}<span class="an-quote-mark-close">”</span>
+        </div>
+        <div class="an-quote-review">
+            <div class="an-review-icon">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#c9a227" stroke-width="1.2">
+                    <circle cx="8" cy="8" r="6" stroke-dasharray="2 2"/>
+                    <path d="M8 3 C9.5 5.5 12 7 12 8 C12 10.2 10.2 12 8 12 C5.8 12 4 10.2 4 8 C4 7 6.5 5.5 8 3 Z"/>
+                </svg>
+            </div>
+            <div class="an-review-content">
+                <span class="an-review-badge">心绪与评述</span>
+                <span class="an-review-text">{{ quote.reason | safe }}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

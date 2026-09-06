@@ -1,0 +1,32 @@
+{% if summary %}
+<div class="an-quality-summary">
+    <div class="an-summary-flourish">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c9a227" stroke-width="1.2">
+            <path d="M12 2 C14 6 18 8 22 8 C18 10 16 14 16 22 C14 18 10 16 2 16 C6 14 8 10 8 2 Z"/>
+        </svg>
+    </div>
+    <div class="an-summary-text">{{ summary }}</div>
+</div>
+{% endif %}
+{% if dimensions %}
+<div class="an-dimension-list">
+    {% for dim in dimensions %}
+    {% set safe_percentage = dim.percentage | float %}
+    {% if safe_percentage < 0 %}
+    {% set safe_percentage = 0 %}
+    {% elif safe_percentage > 100 %}
+    {% set safe_percentage = 100 %}
+    {% endif %}
+    <div class="an-dim-item">
+        <div class="an-dim-info">
+            <span class="an-dim-name">{{ dim.name }}</span>
+            <span class="an-dim-ratio">{{ safe_percentage | int }}%</span>
+        </div>
+        <div class="an-dim-track">
+            <div class="an-dim-fill {% if loop.index == 1 %}an-fill-green{% elif loop.index == 2 %}an-fill-gold{% else %}an-fill-wisteria{% endif %}" style="width: {{ safe_percentage }}%;"></div>
+        </div>
+        <div class="an-dim-note">{{ dim.comment }}</div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
